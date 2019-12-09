@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>788</width>
-    <height>524</height>
+    <width>1207</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>788</width>
+     <width>1207</width>
      <height>19</height>
     </rect>
    </property>
@@ -55,6 +55,18 @@
    <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
   <widget class="QDockWidget" name="sceneGraphDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>256</width>
+     <height>192</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>256</width>
+     <height>524287</height>
+    </size>
+   </property>
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -64,6 +76,18 @@
    <widget class="QWidget" name="dockWidgetContents_5"/>
   </widget>
   <widget class="QDockWidget" name="nodeDetailDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>256</width>
+     <height>192</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>256</width>
+     <height>524287</height>
+    </size>
+   </property>
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -73,6 +97,18 @@
    <widget class="QWidget" name="dockWidgetContents_6"/>
   </widget>
   <widget class="QDockWidget" name="nodeItemDetailDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>256</width>
+     <height>192</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>256</width>
+     <height>524287</height>
+    </size>
+   </property>
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -92,7 +128,7 @@
   <customwidget>
    <class>Sahara::SceneWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>widgets/scenewidget.h</header>
+   <header>widgets/scenewidget/scenewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

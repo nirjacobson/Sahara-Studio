@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/camera.png</file>
+        <file>icons/cursor.png</file>
+        <file>icons/eye.png</file>
+        <file>icons/light.png</file>
+        <file>icons/lock.png</file>
+        <file>icons/model.png</file>
+        <file>icons/move.png</file>
+        <file>icons/plane.png</file>
+        <file>icons/scene.png</file>
+        <file>icons/unlock.png</file>
+    </qresource>
+</RCC>

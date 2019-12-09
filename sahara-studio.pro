@@ -26,13 +26,20 @@ QMAKE_CXXFLAGS += -std=c++17
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    scenegraphwidget/scenegraphwidget.cpp \
+    scenegraphwidget/scenegraphitemmodel.cpp \
+    scenegraphwidget/scenegraphtreeview.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    scenegraphwidget/scenegraphwidget.h \
+    scenegraphwidget/scenegraphitemmodel.h \
+    scenegraphwidget/scenegraphtreeview.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    scenegraphwidget/scenegraphwidget.ui
 
 INCLUDEPATH += \
     ../QCollada \
@@ -49,3 +56,6 @@ QMAKE_RPATHDIR += ../build-QCollada-Desktop-Debug
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icons.qrc
