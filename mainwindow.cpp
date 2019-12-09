@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+
     connect(ui->sceneWidget, &Sahara::SceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
 }
 
@@ -31,3 +33,4 @@ void MainWindow::sceneGraphSelectionChanged(Sahara::Node* node)
 {
     _selectedNode = node;
 }
+
