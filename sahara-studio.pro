@@ -29,17 +29,20 @@ SOURCES += \
         mainwindow.cpp \
     scenegraphwidget/scenegraphwidget.cpp \
     scenegraphwidget/scenegraphitemmodel.cpp \
-    scenegraphwidget/scenegraphtreeview.cpp
+    scenegraphwidget/scenegraphtreeview.cpp \
+    nodedetailwidget/nodedetailwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     scenegraphwidget/scenegraphwidget.h \
     scenegraphwidget/scenegraphitemmodel.h \
-    scenegraphwidget/scenegraphtreeview.h
+    scenegraphwidget/scenegraphtreeview.h \
+    nodedetailwidget/nodedetailwidget.h
 
 FORMS += \
         mainwindow.ui \
-    scenegraphwidget/scenegraphwidget.ui
+    scenegraphwidget/scenegraphwidget.ui \
+    nodedetailwidget/nodedetailwidget.ui
 
 INCLUDEPATH += \
     ../QCollada \

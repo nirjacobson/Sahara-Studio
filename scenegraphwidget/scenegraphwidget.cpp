@@ -79,6 +79,8 @@ void SceneGraphWidget::treeViewSelectionChanged(const QItemSelection& selected, 
 
     ui->eyeToolButton->setVisible(dynamic_cast<Sahara::Camera*>(&_selectedNode->item()));
     ui->flyThroughToolButton->setVisible(dynamic_cast<Sahara::Camera*>(&_selectedNode->item()));
+
+    emit selectionChanged(_selectedNode);
 }
 
 void SceneGraphWidget::addPushButtonClicked()
