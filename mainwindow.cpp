@@ -4,6 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    _toolsWidget(nullptr),
     _sceneGraphWidget(nullptr),
     _nodeDetailWidget(nullptr),
     _cameraWidget(nullptr),
@@ -29,10 +30,14 @@ void MainWindow::sceneWidgetInitialized()
     ui->sceneWidget->showGrid(true);
 
     _sceneGraphWidget = new SceneGraphWidget(*ui->sceneWidget);
-
     connect(_sceneGraphWidget, &SceneGraphWidget::selectionChanged, this, &MainWindow::sceneGraphWidgetSelectionChanged);
-
     ui->sceneGraphDockWidget->setWidget(_sceneGraphWidget);
+
+    _toolsWidget = new ToolsWidget(ui->sceneWidget->scene());
+    connect(ui->sceneWidget, &Sahara::SceneWidget::mouseMoved, _toolsWidget, &ToolsWidget::mouseMoved);
+    connect(ui->sceneWidget, &Sahara::SceneWidget::mousePressed, _toolsWidget, &ToolsWidget::mousePressed);
+    connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
+    ui->toolsDockWidget->setWidget(_toolsWidget);
 }
 
 void MainWindow::sceneWidgetSizeChanged(QSize size)
@@ -56,6 +61,7 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
 
     if (node) {
         _nodeDetailWidget = new NodeDetailWidget;
+        connect(_toolsWidget, &ToolsWidget::updatedNode, _nodeDetailWidget, &NodeDetailWidget::updateFields);
         _nodeDetailWidget->setNode(node);
         _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
         ui->nodeDetailDockWidget->setWidget(&_nodeDetailWidgetScrollArea);

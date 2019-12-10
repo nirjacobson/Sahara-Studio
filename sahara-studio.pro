@@ -33,7 +33,11 @@ SOURCES += \
     nodedetailwidget/nodedetailwidget.cpp \
     nodeitemdetailwidget/camerawidget/camerawidget.cpp \
     colorwidget/colorwidget.cpp \
-    nodeitemdetailwidget/pointlightwidget/pointlightwidget.cpp
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.cpp \
+    toolswidget/toolswidget.cpp \
+    toolswidget/tool/tool.cpp \
+    toolswidget/tool/move.cpp \
+    toolswidget/tool/select.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,14 +47,19 @@ HEADERS += \
     nodedetailwidget/nodedetailwidget.h \
     nodeitemdetailwidget/camerawidget/camerawidget.h \
     colorwidget/colorwidget.h \
-    nodeitemdetailwidget/pointlightwidget/pointlightwidget.h
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.h \
+    toolswidget/toolswidget.h \
+    toolswidget/tool/tool.h \
+    toolswidget/tool/move.h \
+    toolswidget/tool/select.h
 
 FORMS += \
         mainwindow.ui \
     scenegraphwidget/scenegraphwidget.ui \
     nodedetailwidget/nodedetailwidget.ui \
     nodeitemdetailwidget/camerawidget/camerawidget.ui \
-    nodeitemdetailwidget/pointlightwidget/pointlightwidget.ui
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.ui \
+    toolswidget/toolswidget.ui
 
 INCLUDEPATH += \
     ../QCollada \

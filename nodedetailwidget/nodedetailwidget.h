@@ -20,6 +20,7 @@ class NodeDetailWidget : public QWidget
 
         void setNode(Sahara::Node* node);
 
+    public slots:
         void updateFields();
 
     signals:

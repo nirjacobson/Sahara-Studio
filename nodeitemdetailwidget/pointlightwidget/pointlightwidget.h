@@ -18,6 +18,8 @@ class PointLightWidget : public QWidget
         ~PointLightWidget();
 
         void setPointLight(Sahara::PointLight* pointLight);
+
+    public slots:
         void updateFields();
 
     private:

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QScrollArea>
 
+#include "toolswidget/toolswidget.h"
 #include "widgets/scenewidget/scenewidget.h"
 #include "scenegraphwidget/scenegraphwidget.h"
 #include "nodedetailwidget/nodedetailwidget.h"
@@ -24,6 +25,7 @@ class MainWindow : public QMainWindow
 
     private:
         Ui::MainWindow *ui;
+        ToolsWidget* _toolsWidget;
         SceneGraphWidget* _sceneGraphWidget;
         NodeDetailWidget* _nodeDetailWidget;
         QScrollArea _nodeDetailWidgetScrollArea;

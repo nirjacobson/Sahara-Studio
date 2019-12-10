@@ -21,6 +21,9 @@ class SceneGraphWidget : public QWidget
         explicit SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget *parent = nullptr);
         ~SceneGraphWidget();
 
+    public slots:
+        void sceneUpdated();
+
     signals:
         void selectionChanged(Sahara::Node* node);
 
@@ -36,7 +39,6 @@ class SceneGraphWidget : public QWidget
         void initAddMenu();
 
     private slots:
-        void sceneUpdated();
         void treeViewSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
         void addPushButtonClicked();
         void addCameraRequested();

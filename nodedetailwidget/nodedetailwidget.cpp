@@ -52,8 +52,8 @@ void NodeDetailWidget::populateFieldsFromNode()
     double m11 = static_cast<double>(_node->transform().row(1)[1]);
 
     double lx = static_cast<double>(_node->globalPosition().x());
-    double ly = static_cast<double>(_node->globalPosition().x());
-    double lz = static_cast<double>(_node->globalPosition().x());
+    double ly = static_cast<double>(_node->globalPosition().y());
+    double lz = static_cast<double>(_node->globalPosition().z());
 
     double rx, ry, rz;
     if (m20 < 1) {

@@ -19,6 +19,7 @@ class CameraWidget : public QWidget
 
         void setCamera(Sahara::Camera* camera);
 
+    public slots:
         void updateFields();
 
     private:
