@@ -30,8 +30,9 @@ class MainWindow : public QMainWindow
         NodeDetailWidget* _nodeDetailWidget;
         QScrollArea _nodeDetailWidgetScrollArea;
         CameraWidget* _cameraWidget;
+        QScrollArea _cameraWidgetScrollArea;
         PointLightWidget* _pointLightWidget;
-        QScrollArea _nodeItemDetailWidgetScrollArea;
+        QScrollArea _pointLightWidgetScrollArea;
 
         Sahara::Node* _selectedNode;
 

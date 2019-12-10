@@ -11,6 +11,15 @@ MainWindow::MainWindow(QWidget *parent) :
     _pointLightWidget(nullptr)
 {
     ui->setupUi(this);
+    ui->nodeDockWidget->setWidget(nullptr);
+
+    _nodeDetailWidget = new NodeDetailWidget;
+    _cameraWidget = new CameraWidget;
+    _pointLightWidget = new PointLightWidget;
+
+    _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
+    _cameraWidgetScrollArea.setWidget(_cameraWidget);
+    _pointLightWidgetScrollArea.setWidget(_pointLightWidget);
 
     connect(ui->sceneWidget, &Sahara::SceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
     connect(ui->sceneWidget, &Sahara::SceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
@@ -34,9 +43,10 @@ void MainWindow::sceneWidgetInitialized()
     ui->sceneGraphDockWidget->setWidget(_sceneGraphWidget);
 
     _toolsWidget = new ToolsWidget(ui->sceneWidget->scene());
+    connect(_toolsWidget, &ToolsWidget::updatedNode, _nodeDetailWidget, &NodeDetailWidget::updateFields);
+    connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
     connect(ui->sceneWidget, &Sahara::SceneWidget::mouseMoved, _toolsWidget, &ToolsWidget::mouseMoved);
     connect(ui->sceneWidget, &Sahara::SceneWidget::mousePressed, _toolsWidget, &ToolsWidget::mousePressed);
-    connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
     ui->toolsDockWidget->setWidget(_toolsWidget);
 }
 
@@ -59,31 +69,24 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
 {
     _selectedNode = node;
 
+   ui->nodeTabWidget->clear();
+
     if (node) {
-        _nodeDetailWidget = new NodeDetailWidget;
-        connect(_toolsWidget, &ToolsWidget::updatedNode, _nodeDetailWidget, &NodeDetailWidget::updateFields);
         _nodeDetailWidget->setNode(node);
-        _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
-        ui->nodeDetailDockWidget->setWidget(&_nodeDetailWidgetScrollArea);
+        ui->nodeTabWidget->insertTab(0, &_nodeDetailWidgetScrollArea, "Node");
 
         Sahara::Camera* camera;
         Sahara::PointLight* pointLight;
         if ((camera = dynamic_cast<Sahara::Camera*>(&node->item()))) {
-            _cameraWidget = new CameraWidget;
             _cameraWidget->setCamera(camera);
-            _nodeItemDetailWidgetScrollArea.setWidget(_cameraWidget);
-            ui->nodeItemDetailDockWidget->setWidget(&_nodeItemDetailWidgetScrollArea);
+            ui->nodeTabWidget->insertTab(1, &_cameraWidgetScrollArea, "Camera");
         } else if ((pointLight = dynamic_cast<Sahara::PointLight*>(&node->item()))) {
-            _pointLightWidget = new PointLightWidget;
             _pointLightWidget->setPointLight(pointLight);
-            _nodeItemDetailWidgetScrollArea.setWidget(_pointLightWidget);
-            ui->nodeItemDetailDockWidget->setWidget(&_nodeItemDetailWidgetScrollArea);
-        } else {
-            ui->nodeItemDetailDockWidget->setWidget(nullptr);
+            ui->nodeTabWidget->insertTab(1, &_pointLightWidgetScrollArea, "Point Light");
         }
+        ui->nodeDockWidget->setWidget(ui->nodeTabWidget);
     } else {
-        ui->nodeDetailDockWidget->setWidget(nullptr);
-        ui->nodeItemDetailDockWidget->setWidget(nullptr);
+        ui->nodeDockWidget->setWidget(nullptr);
     }
 }
 
