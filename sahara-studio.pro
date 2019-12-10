@@ -30,19 +30,22 @@ SOURCES += \
     scenegraphwidget/scenegraphwidget.cpp \
     scenegraphwidget/scenegraphitemmodel.cpp \
     scenegraphwidget/scenegraphtreeview.cpp \
-    nodedetailwidget/nodedetailwidget.cpp
+    nodedetailwidget/nodedetailwidget.cpp \
+    nodeitemdetailwidget/camerawidget/camerawidget.cpp
 
 HEADERS += \
         mainwindow.h \
     scenegraphwidget/scenegraphwidget.h \
     scenegraphwidget/scenegraphitemmodel.h \
     scenegraphwidget/scenegraphtreeview.h \
-    nodedetailwidget/nodedetailwidget.h
+    nodedetailwidget/nodedetailwidget.h \
+    nodeitemdetailwidget/camerawidget/camerawidget.h
 
 FORMS += \
         mainwindow.ui \
     scenegraphwidget/scenegraphwidget.ui \
-    nodedetailwidget/nodedetailwidget.ui
+    nodedetailwidget/nodedetailwidget.ui \
+    nodeitemdetailwidget/camerawidget/camerawidget.ui
 
 INCLUDEPATH += \
     ../QCollada \

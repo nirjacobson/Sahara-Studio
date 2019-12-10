@@ -20,6 +20,8 @@ class NodeDetailWidget : public QWidget
 
         void setNode(Sahara::Node* node);
 
+        void updateFields();
+
     signals:
         void updated();
 
@@ -30,7 +32,7 @@ class NodeDetailWidget : public QWidget
 
         bool _lockScale;
 
-        void setTransformFieldsFromNode();
+        void populateFieldsFromNode();
 
     private slots:
         void nodeUpdated();

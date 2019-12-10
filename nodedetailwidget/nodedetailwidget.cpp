@@ -33,10 +33,15 @@ void NodeDetailWidget::setNode(Sahara::Node* node)
 {
     _node = node;
 
-    setTransformFieldsFromNode();
+    populateFieldsFromNode();
 }
 
-void NodeDetailWidget::setTransformFieldsFromNode()
+void NodeDetailWidget::updateFields()
+{
+    populateFieldsFromNode();
+}
+
+void NodeDetailWidget::populateFieldsFromNode()
 {
     double m20 = static_cast<double>(_node->transform().row(2)[0]);
     double m10 = static_cast<double>(_node->transform().row(1)[0]);
@@ -108,7 +113,7 @@ void NodeDetailWidget::setTransformFieldsFromNode()
 
 void NodeDetailWidget::nodeUpdated()
 {
-    setTransformFieldsFromNode();
+    populateFieldsFromNode();
 }
 
 void NodeDetailWidget::doubleSpinBoxValueChanged(const double)
