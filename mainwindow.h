@@ -8,6 +8,7 @@
 #include "scenegraphwidget/scenegraphwidget.h"
 #include "nodedetailwidget/nodedetailwidget.h"
 #include "nodeitemdetailwidget/camerawidget/camerawidget.h"
+#include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +28,7 @@ class MainWindow : public QMainWindow
         NodeDetailWidget* _nodeDetailWidget;
         QScrollArea _nodeDetailWidgetScrollArea;
         CameraWidget* _cameraWidget;
+        PointLightWidget* _pointLightWidget;
         QScrollArea _nodeItemDetailWidgetScrollArea;
 
         Sahara::Node* _selectedNode;

@@ -31,7 +31,9 @@ SOURCES += \
     scenegraphwidget/scenegraphitemmodel.cpp \
     scenegraphwidget/scenegraphtreeview.cpp \
     nodedetailwidget/nodedetailwidget.cpp \
-    nodeitemdetailwidget/camerawidget/camerawidget.cpp
+    nodeitemdetailwidget/camerawidget/camerawidget.cpp \
+    colorwidget/colorwidget.cpp \
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,13 +41,16 @@ HEADERS += \
     scenegraphwidget/scenegraphitemmodel.h \
     scenegraphwidget/scenegraphtreeview.h \
     nodedetailwidget/nodedetailwidget.h \
-    nodeitemdetailwidget/camerawidget/camerawidget.h
+    nodeitemdetailwidget/camerawidget/camerawidget.h \
+    colorwidget/colorwidget.h \
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.h
 
 FORMS += \
         mainwindow.ui \
     scenegraphwidget/scenegraphwidget.ui \
     nodedetailwidget/nodedetailwidget.ui \
-    nodeitemdetailwidget/camerawidget/camerawidget.ui
+    nodeitemdetailwidget/camerawidget/camerawidget.ui \
+    nodeitemdetailwidget/pointlightwidget/pointlightwidget.ui
 
 INCLUDEPATH += \
     ../QCollada \

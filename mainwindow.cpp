@@ -4,27 +4,24 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _sceneGraphWidget(nullptr)
+    _sceneGraphWidget(nullptr),
+    _nodeDetailWidget(nullptr),
+    _cameraWidget(nullptr),
+    _pointLightWidget(nullptr)
 {
     ui->setupUi(this);
-
-    _nodeDetailWidget = new NodeDetailWidget;
-    _cameraWidget = new CameraWidget;
 
     connect(ui->sceneWidget, &Sahara::SceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
     connect(ui->sceneWidget, &Sahara::SceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
     connect(ui->sceneWidget, &Sahara::SceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
 
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
-
-    _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete _cameraWidget;
-    delete _nodeDetailWidget;
+    delete _sceneGraphWidget;
 }
 
 void MainWindow::sceneWidgetInitialized()
@@ -58,14 +55,25 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
     _selectedNode = node;
 
     if (node) {
+        _nodeDetailWidget = new NodeDetailWidget;
         _nodeDetailWidget->setNode(node);
+        _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
         ui->nodeDetailDockWidget->setWidget(&_nodeDetailWidgetScrollArea);
 
         Sahara::Camera* camera;
+        Sahara::PointLight* pointLight;
         if ((camera = dynamic_cast<Sahara::Camera*>(&node->item()))) {
+            _cameraWidget = new CameraWidget;
             _cameraWidget->setCamera(camera);
             _nodeItemDetailWidgetScrollArea.setWidget(_cameraWidget);
             ui->nodeItemDetailDockWidget->setWidget(&_nodeItemDetailWidgetScrollArea);
+        } else if ((pointLight = dynamic_cast<Sahara::PointLight*>(&node->item()))) {
+            _pointLightWidget = new PointLightWidget;
+            _pointLightWidget->setPointLight(pointLight);
+            _nodeItemDetailWidgetScrollArea.setWidget(_pointLightWidget);
+            ui->nodeItemDetailDockWidget->setWidget(&_nodeItemDetailWidgetScrollArea);
+        } else {
+            ui->nodeItemDetailDockWidget->setWidget(nullptr);
         }
     } else {
         ui->nodeDetailDockWidget->setWidget(nullptr);
