@@ -52,7 +52,6 @@ void MainWindow::sceneWidgetInitialized()
 
 void MainWindow::sceneWidgetSizeChanged(QSize size)
 {
-    ui->sceneWidget->scene().camera().setAspect(static_cast<float>(size.width()) / size.height());
     if (_selectedNode == &ui->sceneWidget->scene().cameraNode()) {
         _cameraWidget->updateFields();
     }
