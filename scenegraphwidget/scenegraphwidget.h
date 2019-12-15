@@ -21,6 +21,8 @@ class SceneGraphWidget : public QWidget
         explicit SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget *parent = nullptr);
         ~SceneGraphWidget();
 
+        void reload();
+
     public slots:
         void sceneUpdated();
 

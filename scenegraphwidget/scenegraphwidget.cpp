@@ -33,6 +33,18 @@ SceneGraphWidget::~SceneGraphWidget()
     delete ui;
 }
 
+void SceneGraphWidget::reload()
+{
+    SceneGraphItemModel* model = _treeModel;
+
+    _treeModel = new SceneGraphItemModel(_sceneWidget.scene());
+    ui->sceneGraphTreeView->setModel(_treeModel);
+    ui->sceneGraphTreeView->expandAll();
+    connect(ui->sceneGraphTreeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &SceneGraphWidget::treeViewSelectionChanged);
+
+    delete model;
+}
+
 void SceneGraphWidget::initAddMenu()
 {
     QAction* cameraAction = _addMenu.addAction("Camera");

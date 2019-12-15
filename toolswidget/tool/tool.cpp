@@ -2,7 +2,7 @@
 
 Tool::Tool(Sahara::Scene& scene, QObject* parent)
     : QObject(parent)
-    , _scene(scene)
+    , _scene(&scene)
 {
 
 }
@@ -12,7 +12,12 @@ Tool::~Tool()
 
 }
 
-Sahara::Scene&Tool::scene()
+void Tool::setScene(Sahara::Scene& scene)
 {
-    return _scene;
+    _scene = &scene;
+}
+
+Sahara::Scene& Tool::scene()
+{
+    return *_scene;
 }

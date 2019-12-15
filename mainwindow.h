@@ -45,6 +45,7 @@ class MainWindow : public QMainWindow
         void newActionTriggered();
         void openActionTriggered();
         void saveAsActionTriggered();
+        void sceneLoaded();
 };
 
 #endif // MAINWINDOW_H

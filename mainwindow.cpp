@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->sceneWidget, &Sahara::SceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
     connect(ui->sceneWidget, &Sahara::SceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
     connect(ui->sceneWidget, &Sahara::SceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
+    connect(ui->sceneWidget, &Sahara::SceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
 
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newActionTriggered);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openActionTriggered);
@@ -141,5 +142,12 @@ void MainWindow::saveAsActionTriggered()
 
     QJsonDocument saveDocument = QJsonDocument(Sahara::JSON::fromScene(&ui->sceneWidget->scene()));
     file.write(saveDocument.toJson(QJsonDocument::JsonFormat::Indented));
+}
+
+void MainWindow::sceneLoaded()
+{
+    _toolsWidget->setScene(ui->sceneWidget->scene());
+    _sceneGraphWidget->reload();
+    ui->nodeDockWidget->setWidget(nullptr);
 }
 

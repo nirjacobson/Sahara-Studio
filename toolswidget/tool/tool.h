@@ -17,6 +17,8 @@ class Tool : public QObject
         virtual void mouseMoved(const QVector2D& ndc) = 0;
         virtual void mousePressed(const QVector2D& ndc) = 0;
 
+        void setScene(Sahara::Scene& scene);
+
     signals:
         void released();
         void updatedScene();
@@ -26,7 +28,7 @@ class Tool : public QObject
         Sahara::Scene& scene();
 
     private:
-        Sahara::Scene& _scene;
+        Sahara::Scene* _scene;
 };
 
 #endif // TOOL_H

@@ -31,6 +31,12 @@ ToolsWidget::~ToolsWidget()
     delete ui;
 }
 
+void ToolsWidget::setScene(Sahara::Scene& scene)
+{
+    _select.setScene(scene);
+    _move.setScene(scene);
+}
+
 void ToolsWidget::mouseMoved(const QVector2D& ndc)
 {
     _tool->mouseMoved(ndc);

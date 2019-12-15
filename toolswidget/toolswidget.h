@@ -19,6 +19,8 @@ class ToolsWidget : public QWidget
         explicit ToolsWidget(Sahara::Scene& scene, QWidget *parent = nullptr);
         ~ToolsWidget();
 
+        void setScene(Sahara::Scene& scene);
+
     public slots:
         void mouseMoved(const QVector2D& ndc);
         void mousePressed(const QVector2D& ndc);
