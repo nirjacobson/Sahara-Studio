@@ -97,7 +97,7 @@ void SceneGraphWidget::addCameraRequested()
         index = ui->sceneGraphTreeView->selectionModel()->selectedIndexes().first();
     }
 
-    Sahara::Camera* camera = new Sahara::Camera(Sahara::Camera::Mode::Perspective, 49, 7.31429f, 1.33f, 1, 100);
+    Sahara::Camera* camera = new Sahara::Camera("Camera", Sahara::Camera::Mode::Perspective, 49, 7.31429f, 1.33f, 1, 100);
     _treeModel->addItem(index, "Camera", camera);
 
 }
@@ -111,7 +111,7 @@ void SceneGraphWidget::addPointLightRequested()
         index = ui->sceneGraphTreeView->selectionModel()->selectedIndexes().first();
     }
 
-    Sahara::PointLight* pointLight = new Sahara::PointLight(QColor(255, 255, 255), 1, 0, 0.0016f);
+    Sahara::PointLight* pointLight = new Sahara::PointLight("Light", QColor(255, 255, 255), 1, 0, 0.0016f);
     _treeModel->addItem(index, "Light", pointLight);
 }
 

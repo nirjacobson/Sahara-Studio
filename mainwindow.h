@@ -10,6 +10,7 @@
 #include "nodedetailwidget/nodedetailwidget.h"
 #include "nodeitemdetailwidget/camerawidget/camerawidget.h"
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
+#include "json/json.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +42,9 @@ class MainWindow : public QMainWindow
         void sceneWidgetSizeChanged(QSize size);
         void sceneWidgetCameraMotion();
         void sceneGraphWidgetSelectionChanged(Sahara::Node* node);
+        void newActionTriggered();
+        void openActionTriggered();
+        void saveAsActionTriggered();
 };
 
 #endif // MAINWINDOW_H
