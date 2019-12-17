@@ -99,21 +99,23 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_6">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QTabWidget" name="nodeTabWidget">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Node</string>
-        </attribute>
-       </widget>
-      </widget>
-     </item>
-    </layout>
+    <layout class="QGridLayout" name="gridLayout_2"/>
    </widget>
+  </widget>
+  <widget class="QDockWidget" name="nodeItemDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>256</width>
+     <height>192</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::NoDockWidgetFeatures</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2"/>
   </widget>
   <action name="actionQuit">
    <property name="text">

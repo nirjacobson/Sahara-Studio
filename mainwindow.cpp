@@ -72,24 +72,24 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
 {
     _selectedNode = node;
 
-   ui->nodeTabWidget->clear();
-
     if (node) {
         _nodeDetailWidget->setNode(node);
-        ui->nodeTabWidget->insertTab(0, &_nodeDetailWidgetScrollArea, "Node");
+        ui->nodeDockWidget->setWidget(&_nodeDetailWidgetScrollArea);
 
         Sahara::Camera* camera;
         Sahara::PointLight* pointLight;
         if ((camera = dynamic_cast<Sahara::Camera*>(&node->item()))) {
             _cameraWidget->setCamera(camera);
-            ui->nodeTabWidget->insertTab(1, &_cameraWidgetScrollArea, "Camera");
+            ui->nodeItemDockWidget->setWidget(&_cameraWidgetScrollArea);
         } else if ((pointLight = dynamic_cast<Sahara::PointLight*>(&node->item()))) {
             _pointLightWidget->setPointLight(pointLight);
-            ui->nodeTabWidget->insertTab(1, &_pointLightWidgetScrollArea, "Point Light");
+            ui->nodeItemDockWidget->setWidget(&_pointLightWidgetScrollArea);
+        } else {
+            ui->nodeItemDockWidget->setWidget(nullptr);
         }
-        ui->nodeDockWidget->setWidget(ui->nodeTabWidget);
     } else {
         ui->nodeDockWidget->setWidget(nullptr);
+        ui->nodeItemDockWidget->setWidget(nullptr);
     }
 }
 
@@ -148,5 +148,6 @@ void MainWindow::sceneLoaded()
     _toolsWidget->setScene(ui->sceneWidget->scene());
     _sceneGraphWidget->reload();
     ui->nodeDockWidget->setWidget(nullptr);
+    ui->nodeItemDockWidget->setWidget(nullptr);
 }
 
