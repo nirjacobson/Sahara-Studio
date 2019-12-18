@@ -33,7 +33,7 @@ SceneGraphWidget::~SceneGraphWidget()
     delete ui;
 }
 
-void SceneGraphWidget::reload()
+void SceneGraphWidget::reset()
 {
     SceneGraphItemModel* model = _treeModel;
 

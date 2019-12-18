@@ -8,7 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _sceneGraphWidget(nullptr),
     _nodeDetailWidget(nullptr),
     _cameraWidget(nullptr),
-    _pointLightWidget(nullptr)
+    _pointLightWidget(nullptr),
+    _modelWidget(nullptr)
 {
     ui->setupUi(this);
     ui->nodeDockWidget->setWidget(nullptr);
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _nodeDetailWidget = new NodeDetailWidget;
     _cameraWidget = new CameraWidget;
     _pointLightWidget = new PointLightWidget;
+    _modelWidget = new ModelWidget;
 
     _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
     _cameraWidgetScrollArea.setWidget(_cameraWidget);
@@ -78,12 +80,16 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
 
         Sahara::Camera* camera;
         Sahara::PointLight* pointLight;
+        Sahara::Model* model;
         if ((camera = dynamic_cast<Sahara::Camera*>(&node->item()))) {
             _cameraWidget->setCamera(camera);
             ui->nodeItemDockWidget->setWidget(&_cameraWidgetScrollArea);
         } else if ((pointLight = dynamic_cast<Sahara::PointLight*>(&node->item()))) {
             _pointLightWidget->setPointLight(pointLight);
             ui->nodeItemDockWidget->setWidget(&_pointLightWidgetScrollArea);
+        } else if ((model = dynamic_cast<Sahara::Model*>(&node->item()))) {
+            _modelWidget->setModel(model);
+            ui->nodeItemDockWidget->setWidget(_modelWidget);
         } else {
             ui->nodeItemDockWidget->setWidget(nullptr);
         }
@@ -146,7 +152,7 @@ void MainWindow::saveAsActionTriggered()
 void MainWindow::sceneLoaded()
 {
     _toolsWidget->setScene(ui->sceneWidget->scene());
-    _sceneGraphWidget->reload();
+    _sceneGraphWidget->reset();
     ui->nodeDockWidget->setWidget(nullptr);
     ui->nodeItemDockWidget->setWidget(nullptr);
 }

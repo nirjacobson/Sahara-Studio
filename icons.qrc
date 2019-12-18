@@ -10,5 +10,7 @@
         <file>icons/plane.png</file>
         <file>icons/scene.png</file>
         <file>icons/unlock.png</file>
+        <file>icons/mesh.png</file>
+        <file>icons/surface.png</file>
     </qresource>
 </RCC>

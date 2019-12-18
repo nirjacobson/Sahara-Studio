@@ -37,7 +37,11 @@ SOURCES += \
     toolswidget/toolswidget.cpp \
     toolswidget/tool/tool.cpp \
     toolswidget/tool/move.cpp \
-    toolswidget/tool/select.cpp
+    toolswidget/tool/select.cpp \
+    nodeitemdetailwidget/modelwidget/modelwidget.cpp \
+    nodeitemdetailwidget/modelwidget/geometryitemmodel.cpp \
+    nodeitemdetailwidget/modelwidget/geometrymodel.cpp \
+    nodeitemdetailwidget/modelwidget/materialwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +55,11 @@ HEADERS += \
     toolswidget/toolswidget.h \
     toolswidget/tool/tool.h \
     toolswidget/tool/move.h \
-    toolswidget/tool/select.h
+    toolswidget/tool/select.h \
+    nodeitemdetailwidget/modelwidget/modelwidget.h \
+    nodeitemdetailwidget/modelwidget/geometryitemmodel.h \
+    nodeitemdetailwidget/modelwidget/geometrymodel.h \
+    nodeitemdetailwidget/modelwidget/materialwidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -59,7 +67,9 @@ FORMS += \
     nodedetailwidget/nodedetailwidget.ui \
     nodeitemdetailwidget/camerawidget/camerawidget.ui \
     nodeitemdetailwidget/pointlightwidget/pointlightwidget.ui \
-    toolswidget/toolswidget.ui
+    toolswidget/toolswidget.ui \
+    nodeitemdetailwidget/modelwidget/modelwidget.ui \
+    nodeitemdetailwidget/modelwidget/materialwidget.ui
 
 INCLUDEPATH += \
     ../QCollada \

@@ -105,7 +105,7 @@ QVariant SceneGraphItemModel::headerData(int section, Qt::Orientation orientatio
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             if (section == 0) {
-                return "Scene";
+                return "";
             }
         }
     }

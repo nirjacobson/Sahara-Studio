@@ -10,6 +10,7 @@
 #include "nodedetailwidget/nodedetailwidget.h"
 #include "nodeitemdetailwidget/camerawidget/camerawidget.h"
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
+#include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "json/json.h"
 
 namespace Ui {
@@ -34,6 +35,7 @@ class MainWindow : public QMainWindow
         QScrollArea _cameraWidgetScrollArea;
         PointLightWidget* _pointLightWidget;
         QScrollArea _pointLightWidgetScrollArea;
+        ModelWidget* _modelWidget;
 
         Sahara::Node* _selectedNode;
 
