@@ -48,6 +48,9 @@ class MainWindow : public QMainWindow
         void openActionTriggered();
         void saveAsActionTriggered();
         void sceneLoaded();
+        void viewMenuAboutToShow();
+        void gridActionTriggered();
+        void axesActionTriggered();
 };
 
 #endif // MAINWINDOW_H

@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openActionTriggered);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveAsActionTriggered);
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+
+    connect(ui->menuView, &QMenu::aboutToShow, this, &MainWindow::viewMenuAboutToShow);
+    connect(ui->actionGrid, &QAction::triggered, this, &MainWindow::gridActionTriggered);
+    connect(ui->actionAxes, &QAction::triggered, this, &MainWindow::axesActionTriggered);
 }
 
 MainWindow::~MainWindow()
@@ -155,5 +159,22 @@ void MainWindow::sceneLoaded()
     _sceneGraphWidget->reset();
     ui->nodeDockWidget->setWidget(nullptr);
     ui->nodeItemDockWidget->setWidget(nullptr);
+}
+
+void MainWindow::viewMenuAboutToShow()
+{
+    ui->actionGrid->setChecked(ui->sceneWidget->showGrid());
+    ui->actionAxes->setChecked(ui->sceneWidget->showGrid() && ui->sceneWidget->showAxes());
+    ui->actionAxes->setEnabled(ui->sceneWidget->showGrid());
+}
+
+void MainWindow::gridActionTriggered()
+{
+    ui->sceneWidget->showGrid(!ui->sceneWidget->showGrid());
+}
+
+void MainWindow::axesActionTriggered()
+{
+    ui->sceneWidget->showAxes(!ui->sceneWidget->showAxes());
 }
 
