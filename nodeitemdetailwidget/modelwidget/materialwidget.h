@@ -2,8 +2,14 @@
 #define MATERIALWIDGET_H
 
 #include <QWidget>
+#include <QFileInfo>
+#include <QLabel>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "scene/asset/material.h"
+#include "colorwidget/colorwidget.h"
+#include "linkwidget/linkwidget.h"
 
 namespace Ui {
 class MaterialWidget;
@@ -29,6 +35,7 @@ class MaterialWidget : public QWidget
     private slots:
 
         void fieldValueChanged();
+        void imageFileLinkClicked();
 };
 
 #endif // MATERIALWIDGET_H

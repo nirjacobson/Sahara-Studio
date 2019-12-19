@@ -41,7 +41,8 @@ SOURCES += \
     nodeitemdetailwidget/modelwidget/modelwidget.cpp \
     nodeitemdetailwidget/modelwidget/geometryitemmodel.cpp \
     nodeitemdetailwidget/modelwidget/geometrymodel.cpp \
-    nodeitemdetailwidget/modelwidget/materialwidget.cpp
+    nodeitemdetailwidget/modelwidget/materialwidget.cpp \
+    linkwidget/linkwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,7 +60,8 @@ HEADERS += \
     nodeitemdetailwidget/modelwidget/modelwidget.h \
     nodeitemdetailwidget/modelwidget/geometryitemmodel.h \
     nodeitemdetailwidget/modelwidget/geometrymodel.h \
-    nodeitemdetailwidget/modelwidget/materialwidget.h
+    nodeitemdetailwidget/modelwidget/materialwidget.h \
+    linkwidget/linkwidget.h
 
 FORMS += \
         mainwindow.ui \
