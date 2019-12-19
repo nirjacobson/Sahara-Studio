@@ -44,7 +44,8 @@ void MaterialWidget::populateFieldsFromMaterial()
 
     if (_material->image().has_value()) {
         ui->diffuseLabel->setText("Image:");
-        ui->imageFileLink->setText(QFileInfo((*_material->image())->uri()).fileName());
+        QString url = QUrl::fromPercentEncoding((*_material->image())->uri().toLatin1());
+        ui->imageFileLink->setText(QFileInfo(url).fileName());
         ui->imageFileLink->setVisible(true);
         ui->diffuseColorWidget->setVisible(false);
     } else {
@@ -72,5 +73,6 @@ void MaterialWidget::fieldValueChanged()
 
 void MaterialWidget::imageFileLinkClicked()
 {
-    QDesktopServices::openUrl(QUrl((*_material->image())->uri()));
+    QString url = QUrl::fromPercentEncoding((*_material->image())->uri().toLatin1());
+    QDesktopServices::openUrl(QUrl::fromLocalFile(url));
 }
