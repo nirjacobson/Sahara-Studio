@@ -12,6 +12,29 @@ MainWindow::MainWindow(QWidget *parent) :
     _modelWidget(nullptr)
 {
     ui->setupUi(this);
+
+    ui->actionNew->setIcon(QIcon::fromTheme("document-new"));
+    ui->actionOpen->setIcon(QIcon::fromTheme("document-open"));
+    ui->actionSaveAs->setIcon(QIcon::fromTheme("document-save-as"));
+    ui->actionExit->setIcon(QIcon::fromTheme("application-exit"));
+
+    ui->actionNew->setShortcut(QKeySequence::New);
+    ui->actionOpen->setShortcut(QKeySequence::Open);
+    ui->actionSaveAs->setShortcut(QKeySequence::SaveAs);
+    ui->actionExit->setShortcut(QKeySequence::Quit);
+
+    ui->actionFPS->setIcon(QIcon(":/icons/counter.png"));
+    ui->actionGrid->setIcon(QIcon(":/icons/grid.png"));
+    ui->actionAxes->setIcon(QIcon(":/icons/axes.png"));
+    ui->actionLights->setIcon(QIcon(":/icons/light.png"));
+    ui->actionCameras->setIcon(QIcon(":/icons/camera.png"));
+
+    ui->actionFPS->setShortcut(QKeySequence(Qt::ALT + Qt::Key_P));
+    ui->actionGrid->setShortcut(QKeySequence(Qt::ALT + Qt::Key_G));
+    ui->actionAxes->setShortcut(QKeySequence(Qt::ALT + Qt::Key_A));
+    ui->actionLights->setShortcut(QKeySequence(Qt::ALT + Qt::Key_L));
+    ui->actionCameras->setShortcut(QKeySequence(Qt::ALT + Qt::Key_C));
+
     ui->nodeDockWidget->setWidget(nullptr);
 
     _nodeDetailWidget = new NodeDetailWidget;
@@ -31,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newActionTriggered);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openActionTriggered);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveAsActionTriggered);
-    connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
 
     connect(ui->menuView, &QMenu::aboutToShow, this, &MainWindow::viewMenuAboutToShow);
     connect(ui->actionFPS, &QAction::triggered, this, &MainWindow::fpsActionTriggered);
