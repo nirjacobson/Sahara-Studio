@@ -34,8 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
 
     connect(ui->menuView, &QMenu::aboutToShow, this, &MainWindow::viewMenuAboutToShow);
+    connect(ui->actionFPS, &QAction::triggered, this, &MainWindow::fpsActionTriggered);
     connect(ui->actionGrid, &QAction::triggered, this, &MainWindow::gridActionTriggered);
     connect(ui->actionAxes, &QAction::triggered, this, &MainWindow::axesActionTriggered);
+    connect(ui->actionLights, &QAction::triggered, this, &MainWindow::lightsActionTriggered);
+    connect(ui->actionCameras, &QAction::triggered, this, &MainWindow::camerasActionTriggered);
 }
 
 MainWindow::~MainWindow()
@@ -163,9 +166,17 @@ void MainWindow::sceneLoaded()
 
 void MainWindow::viewMenuAboutToShow()
 {
+    ui->actionFPS->setChecked(ui->sceneWidget->showFPS());
     ui->actionGrid->setChecked(ui->sceneWidget->showGrid());
     ui->actionAxes->setChecked(ui->sceneWidget->showGrid() && ui->sceneWidget->showAxes());
     ui->actionAxes->setEnabled(ui->sceneWidget->showGrid());
+    ui->actionLights->setChecked(ui->sceneWidget->showLights());
+    ui->actionCameras->setChecked(ui->sceneWidget->showCameras());
+}
+
+void MainWindow::fpsActionTriggered()
+{
+    ui->sceneWidget->showFPS(!ui->sceneWidget->showFPS());
 }
 
 void MainWindow::gridActionTriggered()
@@ -176,5 +187,15 @@ void MainWindow::gridActionTriggered()
 void MainWindow::axesActionTriggered()
 {
     ui->sceneWidget->showAxes(!ui->sceneWidget->showAxes());
+}
+
+void MainWindow::lightsActionTriggered()
+{
+    ui->sceneWidget->showLights(!ui->sceneWidget->showLights());
+}
+
+void MainWindow::camerasActionTriggered()
+{
+    ui->sceneWidget->showCameras(!ui->sceneWidget->showCameras());
 }
 

@@ -43,8 +43,13 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="actionFPS"/>
+    <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="actionAxes"/>
+    <addaction name="separator"/>
+    <addaction name="actionLights"/>
+    <addaction name="actionCameras"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -174,6 +179,30 @@
    </property>
    <property name="text">
     <string>Axes</string>
+   </property>
+  </action>
+  <action name="actionFPS">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>FPS</string>
+   </property>
+  </action>
+  <action name="actionLights">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lights</string>
+   </property>
+  </action>
+  <action name="actionCameras">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Cameras</string>
    </property>
   </action>
  </widget>
