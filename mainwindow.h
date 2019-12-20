@@ -25,6 +25,8 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
+        bool event(QEvent* event) override;
+
     private:
         Ui::MainWindow *ui;
         ToolsWidget* _toolsWidget;

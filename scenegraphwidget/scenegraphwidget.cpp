@@ -13,6 +13,7 @@ SceneGraphWidget::SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget* pa
     ui->flyThroughToolButton->setIcon(QIcon(":/icons/plane.png"));
     ui->eyeToolButton->setVisible(false);
     ui->flyThroughToolButton->setVisible(false);
+    ui->addPushButton->setIcon(QIcon::fromTheme("list-add"));
 
     _treeModel = new SceneGraphItemModel(sceneWidget.scene());
     ui->sceneGraphTreeView->setModel(_treeModel);
@@ -48,11 +49,15 @@ void SceneGraphWidget::reset()
 void SceneGraphWidget::initAddMenu()
 {
     QAction* cameraAction = _addMenu.addAction("Camera");
+    cameraAction->setIcon(QIcon(":/icons/camera.png"));
 
     QMenu* lightMenu = _addMenu.addMenu("Light");
-    QAction* lightMenuPointAction = lightMenu->addAction("Point");
+    QAction* lightMenuPointAction = lightMenu->addAction("Point Light");
+    lightMenu->setIcon(QIcon(":/icons/light.png"));
+    lightMenuPointAction->setIcon(QIcon(":/icons/light.png"));
 
     QAction* modelAction = _addMenu.addAction("Model");
+    modelAction->setIcon(QIcon(":/icons/model.png"));
 
     connect(cameraAction, &QAction::triggered, this, &SceneGraphWidget::addCameraRequested);
     connect(lightMenuPointAction, &QAction::triggered, this, &SceneGraphWidget::addPointLightRequested);

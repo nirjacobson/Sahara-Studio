@@ -70,6 +70,22 @@ MainWindow::~MainWindow()
     delete _sceneGraphWidget;
 }
 
+bool MainWindow::event(QEvent* event)
+{
+    switch (event->type()) {
+        case QEvent::WindowDeactivate:
+            ui->sceneWidget->pause();
+            break;
+        case QEvent::WindowActivate:
+            ui->sceneWidget->resume();
+            break;
+        default:
+            break;
+    }
+
+    return QMainWindow::event(event);
+}
+
 void MainWindow::sceneWidgetInitialized()
 {
     ui->sceneWidget->showGrid(true);
