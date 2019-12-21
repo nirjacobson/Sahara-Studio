@@ -73,10 +73,10 @@ MainWindow::~MainWindow()
 bool MainWindow::event(QEvent* event)
 {
     switch (event->type()) {
-        case QEvent::WindowDeactivate:
+        case QEvent::WindowBlocked:
             ui->sceneWidget->pause();
             break;
-        case QEvent::WindowActivate:
+        case QEvent::WindowUnblocked:
             ui->sceneWidget->resume();
             break;
         default:
