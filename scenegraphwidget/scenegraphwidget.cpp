@@ -13,7 +13,7 @@ SceneGraphWidget::SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget* pa
     ui->flyThroughToolButton->setIcon(QIcon(":/icons/plane.png"));
     ui->eyeToolButton->setVisible(false);
     ui->flyThroughToolButton->setVisible(false);
-    ui->addPushButton->setIcon(QIcon::fromTheme("list-add"));
+    ui->addPushButton->setIcon(QIcon(":/icons/add.png"));
 
     _treeModel = new SceneGraphItemModel(sceneWidget.scene());
     ui->sceneGraphTreeView->setModel(_treeModel);

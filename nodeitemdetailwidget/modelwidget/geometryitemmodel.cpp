@@ -64,7 +64,7 @@ int GeometryItemModel::rowCount(const QModelIndex &parent) const
     return parentNode->count();
 }
 
-int GeometryItemModel::columnCount(const QModelIndex &parent) const
+int GeometryItemModel::columnCount(const QModelIndex&) const
 {
     return 2;
 }

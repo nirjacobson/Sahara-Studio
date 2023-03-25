@@ -20,7 +20,7 @@ class ColorWidget : public QWidget
 
     protected:
         void mousePressEvent(QMouseEvent* event);
-        void paintEvent(QPaintEvent* event);
+        void paintEvent(QPaintEvent*);
 
     private:
         QColor _color;

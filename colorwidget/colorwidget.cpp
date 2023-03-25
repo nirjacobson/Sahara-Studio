@@ -26,7 +26,7 @@ void ColorWidget::mousePressEvent(QMouseEvent* event)
     QWidget::mousePressEvent(event);
 }
 
-void ColorWidget::paintEvent(QPaintEvent* event)
+void ColorWidget::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
     QPen pen;

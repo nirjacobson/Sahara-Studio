@@ -42,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
     _pointLightWidget = new PointLightWidget;
     _modelWidget = new ModelWidget;
 
+    _cameraWidgetScrollArea.setWidgetResizable(true);
+    _pointLightWidgetScrollArea.setWidgetResizable(true);
+
     _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
     _cameraWidgetScrollArea.setWidget(_cameraWidget);
     _pointLightWidgetScrollArea.setWidget(_pointLightWidget);
@@ -102,7 +105,7 @@ void MainWindow::sceneWidgetInitialized()
     ui->toolsDockWidget->setWidget(_toolsWidget);
 }
 
-void MainWindow::sceneWidgetSizeChanged(QSize size)
+void MainWindow::sceneWidgetSizeChanged(QSize)
 {
     if (_selectedNode == &ui->sceneWidget->scene().cameraNode()) {
         _cameraWidget->updateFields();

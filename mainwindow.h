@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QScrollArea>
+#include <QMessageBox>
+#include <QJsonDocument>
 
 #include "toolswidget/toolswidget.h"
 #include "widgets/scenewidget/scenewidget.h"
@@ -43,7 +45,7 @@ class MainWindow : public QMainWindow
 
     private slots:
         void sceneWidgetInitialized();
-        void sceneWidgetSizeChanged(QSize size);
+        void sceneWidgetSizeChanged(QSize);
         void sceneWidgetCameraMotion();
         void sceneGraphWidgetSelectionChanged(Sahara::Node* node);
         void newActionTriggered();

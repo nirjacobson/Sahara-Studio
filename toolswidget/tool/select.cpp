@@ -35,19 +35,20 @@ void Select::mousePressed(const QVector2D&)
     QVector3D raySegment = _ray * 0.2f;
     Sahara::Node* pickedNode = nullptr;
 
-    scene().root().depthFirst([](Sahara::Node&, auto){}, [&](Sahara::Node& node, auto stop) {
+    scene().root().depthFirst([](Sahara::Node&){ return false; }, [&](Sahara::Node& node) {
         if (&node != &scene().cameraNode()) {
             rayPoint = scene().cameraNode().globalPosition();
             for (int i = 0; i < 1000; i++) {
                 if (node.intersects(rayPoint)) {
                     pickedNode = &node;
-                    stop();
-                    break;
+                    return true;
                 }
 
                 rayPoint += raySegment;
             }
         }
+
+        return false;
     });
 
     if (pickedNode)

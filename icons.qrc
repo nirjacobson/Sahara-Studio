@@ -15,5 +15,6 @@
         <file>icons/axes.png</file>
         <file>icons/counter.png</file>
         <file>icons/grid.png</file>
+        <file>icons/add.png</file>
     </qresource>
 </RCC>

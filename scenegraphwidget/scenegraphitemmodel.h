@@ -2,6 +2,7 @@
 #define SCENEGRAPHITEMMODEL_H
 
 #include <QAbstractItemModel>
+#include <QIcon>
 
 #include "scene/scene.h"
 #include "scene/node/node.h"

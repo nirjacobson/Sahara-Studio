@@ -24,6 +24,8 @@ ModelWidget::~ModelWidget()
 
 void ModelWidget::setModel(Sahara::Model* model)
 {
+    ui->geometryTreeView->setModel(nullptr);
+
     _model = model;
 
     if (_geometryItemModel)

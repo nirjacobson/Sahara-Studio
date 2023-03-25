@@ -2,6 +2,9 @@
 #define SCENEGRAPHWIDGET_H
 
 #include <QWidget>
+#include <QItemSelection>
+#include <QFileDialog>
+#include <QMenu>
 
 #include "widgets/scenewidget/scenewidget.h"
 #include "scene/node/node.h"

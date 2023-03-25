@@ -2,6 +2,7 @@
 #define GEOMETRYITEMMODEL_H
 
 #include <QAbstractItemModel>
+#include <QIcon>
 
 #include "geometrymodel.h"
 
