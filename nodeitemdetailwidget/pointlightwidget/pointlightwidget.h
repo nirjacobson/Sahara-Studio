@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/asset/pointlight.h"
+#include "scene/asset/light/pointlight.h"
 
 namespace Ui {
 class PointLightWidget;

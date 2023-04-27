@@ -27,6 +27,7 @@ QMAKE_CXXFLAGS += -std=c++17
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    nodeitemdetailwidget/scenewidget/scenewidget.cpp \
     scenegraphwidget/scenegraphwidget.cpp \
     scenegraphwidget/scenegraphitemmodel.cpp \
     scenegraphwidget/scenegraphtreeview.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
+    nodeitemdetailwidget/scenewidget/scenewidget.h \
     scenegraphwidget/scenegraphwidget.h \
     scenegraphwidget/scenegraphitemmodel.h \
     scenegraphwidget/scenegraphtreeview.h \
@@ -65,6 +67,7 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
+    nodeitemdetailwidget/scenewidget/scenewidget.ui \
     scenegraphwidget/scenegraphwidget.ui \
     nodedetailwidget/nodedetailwidget.ui \
     nodeitemdetailwidget/camerawidget/camerawidget.ui \

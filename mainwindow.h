@@ -7,12 +7,12 @@
 #include <QJsonDocument>
 
 #include "toolswidget/toolswidget.h"
-#include "widgets/scenewidget/scenewidget.h"
 #include "scenegraphwidget/scenegraphwidget.h"
 #include "nodedetailwidget/nodedetailwidget.h"
 #include "nodeitemdetailwidget/camerawidget/camerawidget.h"
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
+#include "nodeitemdetailwidget/scenewidget/scenewidget.h"
 #include "json/json.h"
 
 namespace Ui {
@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow
         PointLightWidget* _pointLightWidget;
         QScrollArea _pointLightWidgetScrollArea;
         ModelWidget* _modelWidget;
+        SceneWidget* _sceneWidget;
+        QScrollArea _sceneWidgetScrollArea;
 
         Sahara::Node* _selectedNode;
 
