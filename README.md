@@ -3,6 +3,6 @@ Sahara Studio is the test bed for [Sahara](https://github.com/nirjacobson/Sahara
 
 ## Usage
 
-Clone [QCollada](https://github.com/nirjacobson/QCollada) into the same parent directory and build it.  
-Then clone [Sahara](https://github.com/nirjacobson/Sahara) into the same parent directory, and checkout the branch that corresponds to your Raspberry Pi.  
-Build Sahara. Finally, clone Sahara Studio, build, and run.
+Clone [QCollada](https://github.com/nirjacobson/QCollada) into the same parent directory and build it using Qt Creator.  
+Then clone [Sahara](https://github.com/nirjacobson/Sahara) into the same parent directory and build it using Qt Creator.  
+Finally, clone Sahara Studio, build, and run.
