@@ -29,11 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionLights->setIcon(QIcon(":/icons/light.png"));
     ui->actionCameras->setIcon(QIcon(":/icons/camera.png"));
 
-    ui->actionFPS->setShortcut(QKeySequence(Qt::ALT + Qt::Key_P));
-    ui->actionGrid->setShortcut(QKeySequence(Qt::ALT + Qt::Key_G));
-    ui->actionAxes->setShortcut(QKeySequence(Qt::ALT + Qt::Key_A));
-    ui->actionLights->setShortcut(QKeySequence(Qt::ALT + Qt::Key_L));
-    ui->actionCameras->setShortcut(QKeySequence(Qt::ALT + Qt::Key_C));
+    ui->actionFPS->setShortcut(QKeySequence(Qt::ALT | Qt::Key_P));
+    ui->actionGrid->setShortcut(QKeySequence(Qt::ALT | Qt::Key_G));
+    ui->actionAxes->setShortcut(QKeySequence(Qt::ALT | Qt::Key_A));
+    ui->actionLights->setShortcut(QKeySequence(Qt::ALT | Qt::Key_L));
+    ui->actionCameras->setShortcut(QKeySequence(Qt::ALT | Qt::Key_C));
 
     ui->nodeDockWidget->setWidget(nullptr);
 
