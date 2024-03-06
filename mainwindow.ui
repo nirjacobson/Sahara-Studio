@@ -16,14 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="Sahara::SceneWidget" name="sceneWidget">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
+     <widget class="Sahara::SceneWidget" name="sceneWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -217,8 +210,9 @@
  <customwidgets>
   <customwidget>
    <class>Sahara::SceneWidget</class>
-   <extends>QOpenGLWidget</extends>
+   <extends>QWidget</extends>
    <header>widgets/scenewidget/scenewidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

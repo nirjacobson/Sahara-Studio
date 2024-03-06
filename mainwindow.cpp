@@ -173,7 +173,7 @@ void MainWindow::openActionTriggered()
         return;
     }
 
-    Sahara::Scene* scene = Sahara::JSON::toScene(QJsonDocument::fromJson(file.readAll()).object());
+    Sahara::Scene* scene = Sahara::JSON::toScene(ui->sceneWidget->renderer(), QJsonDocument::fromJson(file.readAll()).object());
     ui->sceneWidget->setScene(scene);
 }
 

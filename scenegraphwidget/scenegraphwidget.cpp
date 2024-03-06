@@ -148,7 +148,7 @@ void SceneGraphWidget::addModelRequested()
         index = ui->sceneGraphTreeView->selectionModel()->selectedIndexes().first();
     }
 
-    Sahara::Model* model = Sahara::Model::fromCollada(fileName);
+    Sahara::Model* model = Sahara::Model::fromCollada(_sceneWidget.renderer(), fileName);
     QString name = QFileInfo(fileName).baseName();
     name[0] = name.at(0).toUpper();
     _treeModel->addItem(index, name, model);
