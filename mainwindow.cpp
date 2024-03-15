@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, Application* application) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _toolsWidget(nullptr),
@@ -9,9 +9,18 @@ MainWindow::MainWindow(QWidget *parent) :
     _nodeDetailWidget(nullptr),
     _cameraWidget(nullptr),
     _pointLightWidget(nullptr),
-    _modelWidget(nullptr)
+    _modelWidget(nullptr),
+    _app(application)
 {
     ui->setupUi(this);
+
+    QAction* undoAction = _app->undoStack().createUndoAction(this, "&Undo");
+    undoAction->setShortcuts(QKeySequence::Undo);
+    ui->menuEdit->addAction(undoAction);
+
+    QAction* redoAction = _app->undoStack().createRedoAction(this, "&Redo");
+    redoAction->setShortcuts(QKeySequence::Redo);
+    ui->menuEdit->addAction(redoAction);
 
     ui->actionNew->setIcon(QIcon::fromTheme("document-new"));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open"));
@@ -37,11 +46,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->nodeDockWidget->setWidget(nullptr);
 
-    _nodeDetailWidget = new NodeDetailWidget;
-    _cameraWidget = new CameraWidget;
-    _pointLightWidget = new PointLightWidget;
-    _modelWidget = new ModelWidget;
-    _sceneWidget = new SceneWidget;
+    _nodeDetailWidget = new NodeDetailWidget(this);
+    _cameraWidget = new CameraWidget(this);
+    _pointLightWidget = new PointLightWidget(this);
+    _modelWidget = new ModelWidget(this);
+    _sceneWidget = new SceneWidget(this);
 
     _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
     _cameraWidgetScrollArea.setWidget(_cameraWidget);
@@ -85,23 +94,58 @@ bool MainWindow::event(QEvent* event)
             break;
     }
 
-    return QMainWindow::event(event);
+        return QMainWindow::event(event);
+}
+
+void MainWindow::updateNodeFields()
+{   _nodeDetailWidget->updateFields();
+
+}
+
+void MainWindow::updateCameraFields()
+{
+        _cameraWidget->updateFields();
+}
+
+void MainWindow::updateModelFields()
+{   _modelWidget->updateFields();
+
+}
+
+void MainWindow::updatePointLightFields()
+{
+    _pointLightWidget->updateFields();
+}
+
+void MainWindow::updateSceneFields()
+{
+        _sceneWidget->updateFields();
+}
+
+Application* MainWindow::app() {
+        return _app;
+}
+
+Sahara::Renderer* MainWindow::renderer()
+{
+    return _renderer;
 }
 
 void MainWindow::sceneWidgetInitialized()
 {
     ui->sceneWidget->showGrid(true);
 
-    _sceneGraphWidget = new SceneGraphWidget(*ui->sceneWidget);
+    _sceneGraphWidget = new SceneGraphWidget(this, *ui->sceneWidget);
     connect(_sceneGraphWidget, &SceneGraphWidget::selectionChanged, this, &MainWindow::sceneGraphWidgetSelectionChanged);
     ui->sceneGraphDockWidget->setWidget(_sceneGraphWidget);
 
-    _toolsWidget = new ToolsWidget(ui->sceneWidget->scene());
-    connect(_toolsWidget, &ToolsWidget::updatedNode, _nodeDetailWidget, &NodeDetailWidget::updateFields);
+    _toolsWidget = new ToolsWidget(this, ui->sceneWidget->scene());
     connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
     connect(ui->sceneWidget, &Sahara::SceneWidget::mouseMoved, _toolsWidget, &ToolsWidget::mouseMoved);
     connect(ui->sceneWidget, &Sahara::SceneWidget::mousePressed, _toolsWidget, &ToolsWidget::mousePressed);
     ui->toolsDockWidget->setWidget(_toolsWidget);
+
+    _renderer = ui->sceneWidget->renderer();
 }
 
 void MainWindow::sceneWidgetSizeChanged(QSize)
@@ -113,9 +157,9 @@ void MainWindow::sceneWidgetSizeChanged(QSize)
 
 void MainWindow::sceneWidgetCameraMotion()
 {
-    if (_selectedNode == &ui->sceneWidget->scene().cameraNode()) {
-        _nodeDetailWidget->updateFields();
-    }
+    Sahara::Node& cameraNode = ui->sceneWidget->scene().cameraNode();
+
+    _app->undoStack().push(new TransformNodeCommand(this, &cameraNode, ui->sceneWidget->cameraControl().update(cameraNode)));
 }
 
 void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)

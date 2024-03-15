@@ -1,9 +1,11 @@
 #include "nodedetailwidget.h"
 #include "ui_nodedetailwidget.h"
+#include "mainwindow.h"
 
-NodeDetailWidget::NodeDetailWidget(QWidget *parent) :
+NodeDetailWidget::NodeDetailWidget(MainWindow* window, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::NodeDetailWidget),
+    _window(window),
     _node(nullptr),
     _lockScale(true)
 {
@@ -13,12 +15,12 @@ NodeDetailWidget::NodeDetailWidget(QWidget *parent) :
 
     connect(ui->lockScaleButton, &QPushButton::clicked, this, &NodeDetailWidget::lockScaleButtonClicked);
 
-    connect(ui->locationXDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
-    connect(ui->locationYDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
-    connect(ui->locationZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
-    connect(ui->rotationXDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
-    connect(ui->rotationYDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
-    connect(ui->rotationZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(const double)));
+    connect(ui->locationXDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(loctnXDoubleSpinBoxValueChanged(const double)));
+    connect(ui->locationYDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(loctnYDoubleSpinBoxValueChanged(const double)));
+    connect(ui->locationZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(loctnZDoubleSpinBoxValueChanged(const double)));
+    connect(ui->rotationXDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(rottnXDoubleSpinBoxValueChanged(const double)));
+    connect(ui->rotationYDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(rottnYDoubleSpinBoxValueChanged(const double)));
+    connect(ui->rotationZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(rottnZDoubleSpinBoxValueChanged(const double)));
     connect(ui->scaleXDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(scaleXDoubleSpinBoxValueChanged(const double)));
     connect(ui->scaleYDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(scaleYDoubleSpinBoxValueChanged(const double)));
     connect(ui->scaleZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(scaleZDoubleSpinBoxValueChanged(const double)));
@@ -43,49 +45,12 @@ void NodeDetailWidget::updateFields()
 
 void NodeDetailWidget::populateFieldsFromNode()
 {
-    double m20 = static_cast<double>(_node->transform().row(2)[0]);
-    double m10 = static_cast<double>(_node->transform().row(1)[0]);
-    double m00 = static_cast<double>(_node->transform().row(0)[0]);
-    double m21 = static_cast<double>(_node->transform().row(2)[1]);
-    double m22 = static_cast<double>(_node->transform().row(2)[2]);
-    double m12 = static_cast<double>(_node->transform().row(1)[2]);
-    double m11 = static_cast<double>(_node->transform().row(1)[1]);
-
-    double lx = static_cast<double>(_node->globalPosition().x());
-    double ly = static_cast<double>(_node->globalPosition().y());
-    double lz = static_cast<double>(_node->globalPosition().z());
-
-    double rx, ry, rz;
-    if (m20 < 1) {
-        if (m20 > -1) {
-            rx = qAtan2(m21, m22);
-            ry = qAsin(-m20);
-            rz = qAtan2(m10, m00);
-        } else {
-            rx = 0;
-            ry = M_PI / 2;
-            rz = -qAtan2(-m12, m11);
-        }
-    } else {
-        rx = 0;
-        ry = -M_PI / 2;
-        rz = qAtan2(-m12, m11);
-    }
-
-    rx = qRadiansToDegrees(rx);
-    ry = qRadiansToDegrees(ry);
-    rz = qRadiansToDegrees(rz);
-
-    double sx = static_cast<double>(_node->transform().column(0).length());
-    double sy = static_cast<double>(_node->transform().column(1).length());
-    double sz = static_cast<double>(_node->transform().column(2).length());
-
     ui->locationXDoubleSpinBox->blockSignals(true);
     ui->locationYDoubleSpinBox->blockSignals(true);
     ui->locationZDoubleSpinBox->blockSignals(true);
-    ui->locationXDoubleSpinBox->setValue(lx);
-    ui->locationYDoubleSpinBox->setValue(ly);
-    ui->locationZDoubleSpinBox->setValue(lz);
+    ui->locationXDoubleSpinBox->setValue(_node->location().x());
+    ui->locationYDoubleSpinBox->setValue(_node->location().y());
+    ui->locationZDoubleSpinBox->setValue(_node->location().z());
     ui->locationXDoubleSpinBox->blockSignals(false);
     ui->locationYDoubleSpinBox->blockSignals(false);
     ui->locationZDoubleSpinBox->blockSignals(false);
@@ -93,9 +58,9 @@ void NodeDetailWidget::populateFieldsFromNode()
     ui->rotationXDoubleSpinBox->blockSignals(true);
     ui->rotationYDoubleSpinBox->blockSignals(true);
     ui->rotationZDoubleSpinBox->blockSignals(true);
-    ui->rotationXDoubleSpinBox->setValue(rx);
-    ui->rotationYDoubleSpinBox->setValue(ry);
-    ui->rotationZDoubleSpinBox->setValue(rz);
+    ui->rotationXDoubleSpinBox->setValue(_node->rotation().x());
+    ui->rotationYDoubleSpinBox->setValue(_node->rotation().y());
+    ui->rotationZDoubleSpinBox->setValue(_node->rotation().z());
     ui->rotationXDoubleSpinBox->blockSignals(false);
     ui->rotationYDoubleSpinBox->blockSignals(false);
     ui->rotationZDoubleSpinBox->blockSignals(false);
@@ -103,9 +68,9 @@ void NodeDetailWidget::populateFieldsFromNode()
     ui->scaleXDoubleSpinBox->blockSignals(true);
     ui->scaleYDoubleSpinBox->blockSignals(true);
     ui->scaleZDoubleSpinBox->blockSignals(true);
-    ui->scaleXDoubleSpinBox->setValue(sx);
-    ui->scaleYDoubleSpinBox->setValue(sy);
-    ui->scaleZDoubleSpinBox->setValue(sz);
+    ui->scaleXDoubleSpinBox->setValue(_node->scale().x());
+    ui->scaleYDoubleSpinBox->setValue(_node->scale().y());
+    ui->scaleZDoubleSpinBox->setValue(_node->scale().z());
     ui->scaleXDoubleSpinBox->blockSignals(false);
     ui->scaleYDoubleSpinBox->blockSignals(false);
     ui->scaleZDoubleSpinBox->blockSignals(false);
@@ -146,50 +111,51 @@ void NodeDetailWidget::doubleSpinBoxValueChanged(const double)
     scale.setRow(2, {0, 0, sz, 0});
 
     _node->setTransform(transform * scale);
+}
 
-    emit updated();
+void NodeDetailWidget::loctnXDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new PositionNodeCommand(_window, _node, PositionNodeCommand::X, value));
+}
+
+void NodeDetailWidget::loctnYDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new PositionNodeCommand(_window, _node, PositionNodeCommand::Y, value));
+}
+
+void NodeDetailWidget::loctnZDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new PositionNodeCommand(_window, _node, PositionNodeCommand::Z, value));
+}
+
+void NodeDetailWidget::rottnXDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new RotateNodeCommand(_window, _node, RotateNodeCommand::X, value));
+}
+
+void NodeDetailWidget::rottnYDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new RotateNodeCommand(_window, _node, RotateNodeCommand::Y, value));
+}
+
+void NodeDetailWidget::rottnZDoubleSpinBoxValueChanged(const double value)
+{
+    _window->app()->undoStack().push(new RotateNodeCommand(_window, _node, RotateNodeCommand::Z, value));
 }
 
 void NodeDetailWidget::scaleXDoubleSpinBoxValueChanged(const double value)
 {
-    if (_lockScale) {
-        ui->scaleYDoubleSpinBox->blockSignals(true);
-        ui->scaleZDoubleSpinBox->blockSignals(true);
-        ui->scaleYDoubleSpinBox->setValue(value);
-        ui->scaleZDoubleSpinBox->setValue(value);
-        ui->scaleYDoubleSpinBox->blockSignals(false);
-        ui->scaleZDoubleSpinBox->blockSignals(false);
-    }
-
-    doubleSpinBoxValueChanged(value);
+    _window->app()->undoStack().push(new ScaleNodeCommand(_window, _node, ScaleNodeCommand::X, _lockScale, value));
 }
 
 void NodeDetailWidget::scaleYDoubleSpinBoxValueChanged(const double value)
 {
-    if (_lockScale) {
-        ui->scaleXDoubleSpinBox->blockSignals(true);
-        ui->scaleZDoubleSpinBox->blockSignals(true);
-        ui->scaleXDoubleSpinBox->setValue(value);
-        ui->scaleZDoubleSpinBox->setValue(value);
-        ui->scaleXDoubleSpinBox->blockSignals(false);
-        ui->scaleZDoubleSpinBox->blockSignals(false);
-    }
-
-    doubleSpinBoxValueChanged(value);
+    _window->app()->undoStack().push(new ScaleNodeCommand(_window, _node, ScaleNodeCommand::Y, _lockScale, value));
 }
 
 void NodeDetailWidget::scaleZDoubleSpinBoxValueChanged(const double value)
 {
-    if (_lockScale) {
-        ui->scaleXDoubleSpinBox->blockSignals(true);
-        ui->scaleYDoubleSpinBox->blockSignals(true);
-        ui->scaleXDoubleSpinBox->setValue(value);
-        ui->scaleYDoubleSpinBox->setValue(value);
-        ui->scaleXDoubleSpinBox->blockSignals(false);
-        ui->scaleYDoubleSpinBox->blockSignals(false);
-    }
-
-    doubleSpinBoxValueChanged(value);
+    _window->app()->undoStack().push(new ScaleNodeCommand(_window, _node, ScaleNodeCommand::Z, _lockScale, value));
 }
 
 void NodeDetailWidget::lockScaleButtonClicked()

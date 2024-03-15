@@ -9,6 +9,8 @@
 #include "widgets/scenewidget/scenewidget.h"
 #include "scene/node/node.h"
 #include "scenegraphitemmodel.h"
+#include "commands/addscenegraphitemcommand.h"
+#include "commands/removescenegraphitemcommand.h"
 
 namespace Ui {
 class SceneGraphWidget;
@@ -21,7 +23,7 @@ class SceneGraphWidget : public QWidget
     private:
 
     public:
-        explicit SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget *parent = nullptr);
+        explicit SceneGraphWidget(MainWindow* window, Sahara::SceneWidget& sceneWidget, QWidget *parent = nullptr);
         ~SceneGraphWidget();
 
         void reset();
@@ -33,6 +35,7 @@ class SceneGraphWidget : public QWidget
         void selectionChanged(Sahara::Node* node);
 
     private:
+        MainWindow* _window;
         Ui::SceneGraphWidget *ui;
         Sahara::SceneWidget& _sceneWidget;
 

@@ -11,6 +11,11 @@ Move::~Move()
 
 }
 
+const QMatrix4x4& Move::transform() const
+{
+    return _transform;
+}
+
 void Move::mouseMoved(const QVector2D& ndc)
 {
     QVector4D ray = {
@@ -44,9 +49,9 @@ void Move::mouseMoved(const QVector2D& ndc)
         } else {
             newTransform.setColumn(3, {globalPosition, 1});
         }
-        focusNode->setTransform(newTransform);
+        _transform = newTransform;
 
-        emit updatedNode();
+        emit mouseMotion();
     }
 }
 

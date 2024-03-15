@@ -1,8 +1,10 @@
 #include "scenegraphwidget.h"
 #include "ui_scenegraphwidget.h"
+#include "mainwindow.h"
 
-SceneGraphWidget::SceneGraphWidget(Sahara::SceneWidget& sceneWidget, QWidget* parent) :
+SceneGraphWidget::SceneGraphWidget(MainWindow* window, Sahara::SceneWidget& sceneWidget, QWidget* parent) :
     QWidget(parent),
+    _window(window),
     ui(new Ui::SceneGraphWidget),
     _sceneWidget(sceneWidget),
     _selectedNode(nullptr)
@@ -115,8 +117,8 @@ void SceneGraphWidget::addCameraRequested()
     }
 
     Sahara::Camera* camera = new Sahara::Camera("Camera", Sahara::Camera::Mode::Perspective, 49, 7.31429f, 1.33f, 1, 100);
-    _treeModel->addItem(index, "Camera", camera);
 
+    _window->app()->undoStack().push(new AddSceneGraphItemCommand(_window, _treeModel, index, "Camera", camera));
 }
 
 void SceneGraphWidget::addPointLightRequested()
@@ -129,7 +131,8 @@ void SceneGraphWidget::addPointLightRequested()
     }
 
     Sahara::PointLight* pointLight = new Sahara::PointLight("Light", QColor(255, 255, 255), 1, 0, 0.0016f);
-    _treeModel->addItem(index, "Light", pointLight);
+
+    _window->app()->undoStack().push(new AddSceneGraphItemCommand(_window, _treeModel, index, "Light", pointLight));
 }
 
 void SceneGraphWidget::addModelRequested()
@@ -151,12 +154,13 @@ void SceneGraphWidget::addModelRequested()
     Sahara::Model* model = Sahara::Model::fromCollada(_sceneWidget.renderer(), fileName);
     QString name = QFileInfo(fileName).baseName();
     name[0] = name.at(0).toUpper();
-    _treeModel->addItem(index, name, model);
+
+    _window->app()->undoStack().push(new AddSceneGraphItemCommand(_window, _treeModel, index, name, model));
 }
 
 void SceneGraphWidget::deleteItemRequested(const QModelIndex& index)
 {
-    _treeModel->removeItem(index);
+    _window->app()->undoStack().push(new RemoveSceneGraphItemCommand(_window, _treeModel, index));
 }
 
 void SceneGraphWidget::eyeButtonClicked()

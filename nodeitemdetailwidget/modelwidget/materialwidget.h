@@ -10,6 +10,9 @@
 #include "scene/asset/material.h"
 #include "colorwidget/colorwidget.h"
 #include "linkwidget/linkwidget.h"
+#include "commands/updatemodelmaterialcommand.h"
+
+class MainWindow;
 
 namespace Ui {
 class MaterialWidget;
@@ -23,9 +26,14 @@ class MaterialWidget : public QWidget
         explicit MaterialWidget(QWidget *parent = nullptr);
         ~MaterialWidget();
 
+        void setWindow(MainWindow* window);
+
         void setMaterial(Sahara::Material* material);
 
+        void updateFields();
+
     private:
+        MainWindow* _window;
         Ui::MaterialWidget *ui;
 
         Sahara::Material* _material;
@@ -34,7 +42,13 @@ class MaterialWidget : public QWidget
 
     private slots:
 
-        void fieldValueChanged();
+        void emissionChanged(const QColor& color);
+        void ambientChanged(const QColor& color);
+        void diffuseChanged(const QColor& color);
+        void specularChanged(const QColor& color);
+        void shininessChanged(double value);
+
+
         void imageFileLinkClicked();
 };
 

@@ -14,6 +14,9 @@
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "nodeitemdetailwidget/scenewidget/scenewidget.h"
 #include "json/json.h"
+#include "application.h"
+#include "commands/transformnodecommand.h"
+#include "render/renderer.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,12 +27,23 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     public:
-        explicit MainWindow(QWidget *parent = nullptr);
+        explicit MainWindow(QWidget *parent = nullptr, Application* application = nullptr);
         ~MainWindow();
 
         bool event(QEvent* event) override;
 
+        void updateNodeFields();
+        void updateCameraFields();
+        void updateModelFields();
+        void updatePointLightFields();
+        void updateSceneFields();
+
+        Application* app();
+
+        Sahara::Renderer* renderer();
+
     private:
+        Application* _app;
         Ui::MainWindow *ui;
         ToolsWidget* _toolsWidget;
         SceneGraphWidget* _sceneGraphWidget;
@@ -42,6 +56,7 @@ class MainWindow : public QMainWindow
         ModelWidget* _modelWidget;
         SceneWidget* _sceneWidget;
         QScrollArea _sceneWidgetScrollArea;
+        Sahara::Renderer* _renderer;
 
         Sahara::Node* _selectedNode;
 

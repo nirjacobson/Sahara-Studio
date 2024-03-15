@@ -90,6 +90,29 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        application.h application.cpp
+        commands/positionnodecommand.h
+        commands/positionnodecommand.cpp
+        commands/rotatenodecommand.h
+        commands/rotatenodecommand.cpp
+        commands/scalenodecommand.h
+        commands/scalenodecommand.cpp
+        commands/updatecameracommand.h
+        commands/updatecameracommand.cpp
+        commands/updatemodelmaterialcommand.h
+        commands/updatemodelmaterialcommand.cpp
+        commands/setmodelanimationcommand.h
+        commands/setmodelanimationcommand.cpp
+        commands/updatepointlightcommand.h
+        commands/updatepointlightcommand.cpp
+        commands/updatesceneambientlightcommand.h
+        commands/updatesceneambientlightcommand.cpp
+        commands/addscenegraphitemcommand.h
+        commands/addscenegraphitemcommand.cpp
+        commands/removescenegraphitemcommand.h
+        commands/removescenegraphitemcommand.cpp
+        commands/transformnodecommand.h
+        commands/transformnodecommand.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Sahara-Studio APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

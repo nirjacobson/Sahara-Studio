@@ -130,24 +130,49 @@ Qt::ItemFlags SceneGraphItemModel::flags(const QModelIndex& index) const
     return QAbstractItemModel::flags(index);
 }
 
-void SceneGraphItemModel::addItem(const QModelIndex& index, const QString& name, Sahara::NodeItem* item)
+Sahara::Node* SceneGraphItemModel::addItem(const QModelIndex& index, const QString& name, Sahara::NodeItem* item)
 {
     Sahara::Node* node = static_cast<Sahara::Node*>(index.internalPointer());
 
     beginInsertRows(index, node->children(), node->children());
 
-    node->addChild(new Sahara::Node(name, item, QMatrix4x4()));
+    Sahara::Node* child = new Sahara::Node(name, item, QMatrix4x4());
+
+    node->addChild(child);
+
+    endInsertRows();
+
+    return child;
+}
+
+void SceneGraphItemModel::addItem(const QModelIndex& index, Sahara::Node* node) {
+    Sahara::Node* parentNode = static_cast<Sahara::Node*>(index.internalPointer());
+
+    beginInsertRows(index, parentNode->children(), parentNode->children());
+
+    parentNode->addChild(node);
 
     endInsertRows();
 }
 
-void SceneGraphItemModel::removeItem(const QModelIndex& index)
+Sahara::Node* SceneGraphItemModel::removeItem(const QModelIndex& index)
 {
     Sahara::Node* node = static_cast<Sahara::Node*>(index.internalPointer());
 
     beginRemoveRows(index.parent(), node->index(), node->index());
 
     node->remove();
+
+    endRemoveRows();
+
+    return node;
+}
+
+void SceneGraphItemModel::removeItem(const QModelIndex& parent, Sahara::Node* childNode)
+{
+    beginRemoveRows(parent, childNode->index(), childNode->index());
+
+    childNode->remove();
 
     endRemoveRows();
 }

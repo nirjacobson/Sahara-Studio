@@ -23,8 +23,10 @@ class SceneGraphItemModel : public QAbstractItemModel
         QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
         Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-        void addItem(const QModelIndex& index, const QString& name, Sahara::NodeItem* item);
-        void removeItem(const QModelIndex& index);
+        Sahara::Node* addItem(const QModelIndex& index, const QString& name, Sahara::NodeItem* item);
+        void addItem(const QModelIndex& index, Sahara::Node* node);
+        Sahara::Node* removeItem(const QModelIndex& index);
+        void removeItem(const QModelIndex& parent, Sahara::Node* childNode);
 
         QModelIndex focusIndex() const;
 

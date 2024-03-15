@@ -1,13 +1,16 @@
 #include "modelwidget.h"
 #include "ui_modelwidget.h"
+#include "mainwindow.h"
 
-ModelWidget::ModelWidget(QWidget *parent) :
+ModelWidget::ModelWidget(MainWindow* window, QWidget *parent) :
     QWidget(parent),
+    _window(window),
     ui(new Ui::ModelWidget),
     _geometryModel(nullptr),
     _geometryItemModel(nullptr)
 {
     ui->setupUi(this);
+    ui->materialWidget->setWindow(window);
     ui->materialWidget->setVisible(false);
     ui->tabWidget->setCurrentIndex( ui->tabWidget->count() - 1 );
     _animationsTabWidget = ui->tabWidget->currentWidget();
@@ -64,6 +67,14 @@ void ModelWidget::setModel(Sahara::Model* model)
     }
 }
 
+void ModelWidget::updateFields()
+{
+    ui->materialWidget->updateFields();
+    ui->animationsComboBox->blockSignals(true);
+    ui->animationsComboBox->setCurrentText(_model->animationClip());
+    ui->animationsComboBox->blockSignals(false);
+}
+
 void ModelWidget::materialsComboBoxCurrentTextChanged(const QString& text)
 {
     if (text.isEmpty() || text.isNull()) {
@@ -77,5 +88,5 @@ void ModelWidget::materialsComboBoxCurrentTextChanged(const QString& text)
 
 void ModelWidget::animationsComboBoxCurrentTextChanged(const QString& text)
 {
-    _model->setAnimationClip(text);
+    _window->app()->undoStack().push(new SetModelAnimationCommand(_window, _model, text));
 }

@@ -1,20 +1,21 @@
 #include "toolswidget.h"
 #include "ui_toolswidget.h"
+#include "mainwindow.h"
 
-ToolsWidget::ToolsWidget(Sahara::Scene& scene, QWidget *parent) :
+ToolsWidget::ToolsWidget(MainWindow* window, Sahara::Scene& scene, QWidget *parent) :
     QWidget(parent),
+    _window(window),
     ui(new Ui::ToolsWidget),
     _select(scene),
-    _move(scene)
+    _move(scene),
+    _scene(scene)
 {
     ui->setupUi(this);
 
     connect(&_select, &Tool::released, this, &ToolsWidget::toolReleased);
-    connect(&_select, &Tool::updatedNode, this, &ToolsWidget::updatedNode);
-    connect(&_select, &Tool::updatedScene, this, &ToolsWidget::updatedScene);
+    connect(&_select, &Select::updatedScene, this, &ToolsWidget::updatedScene);
     connect(&_move, &Tool::released, this, &ToolsWidget::toolReleased);
-    connect(&_move, &Tool::updatedNode, this, &ToolsWidget::updatedNode);
-    connect(&_move, &Tool::updatedScene, this, &ToolsWidget::updatedScene);
+    connect(&_move, &Move::mouseMotion, this, &ToolsWidget::moveMotion);
 
     _tool = &_select;
 
@@ -68,4 +69,9 @@ void ToolsWidget::moveToolButtonClicked()
 void ToolsWidget::toolReleased()
 {
     ui->selectToolButton->click();
+}
+
+void ToolsWidget::moveMotion()
+{
+    _window->app()->undoStack().push(new TransformNodeCommand(_window, _scene.focusNode(), _move.transform()));
 }

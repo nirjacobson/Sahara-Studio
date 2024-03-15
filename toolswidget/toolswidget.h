@@ -6,6 +6,9 @@
 #include "scene/scene.h"
 #include "tool/select.h"
 #include "tool/move.h"
+#include "commands/transformnodecommand.h"
+
+class MainWindow;
 
 namespace Ui {
 class ToolsWidget;
@@ -16,7 +19,7 @@ class ToolsWidget : public QWidget
         Q_OBJECT
 
     public:
-        explicit ToolsWidget(Sahara::Scene& scene, QWidget *parent = nullptr);
+        explicit ToolsWidget(MainWindow* window, Sahara::Scene& scene, QWidget *parent = nullptr);
         ~ToolsWidget();
 
         void setScene(Sahara::Scene& scene);
@@ -27,9 +30,10 @@ class ToolsWidget : public QWidget
 
     signals:
         void updatedScene();
-        void updatedNode();
 
     private:
+        MainWindow* _window;
+        Sahara::Scene& _scene;
         Ui::ToolsWidget *ui;
         Select _select;
         Move _move;
@@ -42,6 +46,7 @@ class ToolsWidget : public QWidget
         void selectToolButtonClicked();
         void moveToolButtonClicked();
         void toolReleased();
+        void moveMotion();
 };
 
 #endif // TOOLSWIDGET_H

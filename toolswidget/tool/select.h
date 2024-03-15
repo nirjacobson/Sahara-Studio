@@ -9,12 +9,17 @@
 
 class Select : public Tool
 {
+    Q_OBJECT
+
     public:
         Select(Sahara::Scene& scene);
         ~Select();
 
         void mouseMoved(const QVector2D& ndc) override;
         void mousePressed(const QVector2D&) override;
+
+    signals:
+        void updatedScene();
 
     private:
         QVector3D _ray;

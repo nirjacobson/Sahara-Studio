@@ -6,6 +6,9 @@
 #include "scene/model.h"
 #include "geometrymodel.h"
 #include "geometryitemmodel.h"
+#include "commands/setmodelanimationcommand.h"
+
+class MainWindow;
 
 namespace Ui {
 class ModelWidget;
@@ -16,12 +19,15 @@ class ModelWidget : public QWidget
         Q_OBJECT
 
     public:
-        explicit ModelWidget(QWidget *parent = nullptr);
+        explicit ModelWidget(MainWindow* window, QWidget *parent = nullptr);
         ~ModelWidget();
 
         void setModel(Sahara::Model* model);
 
+        void updateFields();
+
     private:
+        MainWindow* _window;
         Ui::ModelWidget *ui;
         QWidget* _animationsTabWidget;
 

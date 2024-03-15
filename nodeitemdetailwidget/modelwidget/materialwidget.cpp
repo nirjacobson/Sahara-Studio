@@ -1,5 +1,6 @@
 #include "materialwidget.h"
 #include "ui_materialwidget.h"
+#include "mainwindow.h"
 
 MaterialWidget::MaterialWidget(QWidget *parent) :
     QWidget(parent),
@@ -9,11 +10,11 @@ MaterialWidget::MaterialWidget(QWidget *parent) :
 
     ui->imageFileLink->setVisible(false);
 
-    connect(ui->emissionColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::fieldValueChanged);
-    connect(ui->ambientColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::fieldValueChanged);
-    connect(ui->diffuseColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::fieldValueChanged);
-    connect(ui->specularColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::fieldValueChanged);
-    connect(ui->shininessDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(fieldValueChanged()));
+    connect(ui->emissionColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::emissionChanged);
+    connect(ui->ambientColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::ambientChanged);
+    connect(ui->diffuseColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::diffuseChanged);
+    connect(ui->specularColorWidget, &ColorWidget::valueChanged, this, &MaterialWidget::specularChanged);
+    connect(ui->shininessDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(shininessChanged(double)));
     connect(ui->imageFileLink, &LinkWidget::clicked, this, &MaterialWidget::imageFileLinkClicked);
 }
 
@@ -22,10 +23,20 @@ MaterialWidget::~MaterialWidget()
     delete ui;
 }
 
+void MaterialWidget::setWindow(MainWindow* window)
+{
+    _window = window;
+}
+
 void MaterialWidget::setMaterial(Sahara::Material* material)
 {
     _material = material;
 
+    populateFieldsFromMaterial();
+}
+
+void MaterialWidget::updateFields()
+{
     populateFieldsFromMaterial();
 }
 
@@ -62,13 +73,29 @@ void MaterialWidget::populateFieldsFromMaterial()
     ui->shininessDoubleSpinBox->blockSignals(false);
 }
 
-void MaterialWidget::fieldValueChanged()
+void MaterialWidget::emissionChanged(const QColor& color)
 {
-    _material->setEmission(ui->emissionColorWidget->value());
-    _material->setAmbient(ui->ambientColorWidget->value());
-    _material->setDiffuse(ui->diffuseColorWidget->value());
-    _material->setSpecular(ui->specularColorWidget->value());
-    _material->setShininess(static_cast<float>(ui->shininessDoubleSpinBox->value()));
+    _window->app()->undoStack().push(new UpdateModelMaterialCommand(_window, _material, UpdateModelMaterialCommand::EmissionColor, color));
+}
+
+void MaterialWidget::ambientChanged(const QColor& color)
+{
+    _window->app()->undoStack().push(new UpdateModelMaterialCommand(_window, _material, UpdateModelMaterialCommand::AmbientColor, color));
+}
+
+void MaterialWidget::diffuseChanged(const QColor& color)
+{
+    _window->app()->undoStack().push(new UpdateModelMaterialCommand(_window, _material, UpdateModelMaterialCommand::DiffuseColor, color));
+}
+
+void MaterialWidget::specularChanged(const QColor& color)
+{
+    _window->app()->undoStack().push(new UpdateModelMaterialCommand(_window, _material, UpdateModelMaterialCommand::SpecularColor, color));
+}
+
+void MaterialWidget::shininessChanged(double value)
+{
+    _window->app()->undoStack().push(new UpdateModelMaterialCommand(_window, _material, value));
 }
 
 void MaterialWidget::imageFileLinkClicked()

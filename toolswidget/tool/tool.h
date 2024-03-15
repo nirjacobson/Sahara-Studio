@@ -21,8 +21,6 @@ class Tool : public QObject
 
     signals:
         void released();
-        void updatedScene();
-        void updatedNode();
 
     protected:
         Sahara::Scene& scene();

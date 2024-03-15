@@ -1,20 +1,22 @@
 #include "camerawidget.h"
 #include "ui_camerawidget.h"
+#include "mainwindow.h"
 
-CameraWidget::CameraWidget(QWidget *parent) :
+CameraWidget::CameraWidget(MainWindow* window, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CameraWidget)
+    ui(new Ui::CameraWidget),
+    _window(window)
 {
     ui->setupUi(this);
 
     connect(ui->perspectiveRadioButton, &QRadioButton::clicked, this, &CameraWidget::perspectiveRadioButtonClicked);
     connect(ui->orthographicRadioButton, &QRadioButton::clicked, this, &CameraWidget::orthographicRadioButtonClicked);
 
-    connect(ui->aspectRatioDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(void)));
-    connect(ui->xfovDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(void)));
-    connect(ui->xmagDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(void)));
-    connect(ui->znearDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(void)));
-    connect(ui->zfarDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(doubleSpinBoxValueChanged(void)));
+    connect(ui->aspectRatioDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(aspectChanged(double)));
+    connect(ui->xfovDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(xfovChanged(double)));
+    connect(ui->xmagDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(xmagChanged(double)));
+    connect(ui->znearDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(znearChanged(double)));
+    connect(ui->zfarDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(zfarChanged(double)));
 }
 
 CameraWidget::~CameraWidget()
@@ -81,34 +83,35 @@ void CameraWidget::populateFieldsFromCamera()
 
 void CameraWidget::perspectiveRadioButtonClicked()
 {
-    _camera->setMode(Sahara::Camera::Mode::Perspective);
-    ui->xmagLabel->setVisible(false);
-    ui->xmagDoubleSpinBox->setVisible(false);
-    ui->xfovLabel->setVisible(true);
-    ui->xfovDoubleSpinBox->setVisible(true);
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, Sahara::Camera::Mode::Perspective));
 }
 
 void CameraWidget::orthographicRadioButtonClicked()
 {
-    _camera->setMode(Sahara::Camera::Mode::Orthographic);
-    ui->xfovLabel->setVisible(false);
-    ui->xfovDoubleSpinBox->setVisible(false);
-    ui->xmagLabel->setVisible(true);
-    ui->xmagDoubleSpinBox->setVisible(true);
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, Sahara::Camera::Mode::Orthographic));
 }
 
-void CameraWidget::doubleSpinBoxValueChanged()
+void CameraWidget::aspectChanged(double value)
 {
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, UpdateCameraCommand::AspectRatio, value));
+}
 
-    float aspectRatio = static_cast<float>(ui->aspectRatioDoubleSpinBox->value());
-    float xfov = static_cast<float>(ui->xfovDoubleSpinBox->value());
-    float xmag = static_cast<float>(ui->xmagDoubleSpinBox->value());
-    float znear = static_cast<float>(ui->znearDoubleSpinBox->value());
-    float zfar = static_cast<float>(ui->zfarDoubleSpinBox->value());
+void CameraWidget::xfovChanged(double value)
+{
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, UpdateCameraCommand::Xfov, value));
+}
 
-    _camera->setAspect(aspectRatio);
-    _camera->setXfov(xfov);
-    _camera->setXmag(xmag);
-    _camera->setZnear(znear);
-    _camera->setZfar(zfar);
+void CameraWidget::xmagChanged(double value)
+{
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, UpdateCameraCommand::Xmag, value));
+}
+
+void CameraWidget::znearChanged(double value)
+{
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, UpdateCameraCommand::Znear, value));
+}
+
+void CameraWidget::zfarChanged(double value)
+{
+    _window->app()->undoStack().push(new UpdateCameraCommand(_window, _camera, UpdateCameraCommand::Zfar, value));
 }

@@ -4,6 +4,9 @@
 #include <QWidget>
 
 #include "scene/asset/light/pointlight.h"
+#include "commands/updatepointlightcommand.h"
+
+class MainWindow;
 
 namespace Ui {
 class PointLightWidget;
@@ -14,7 +17,7 @@ class PointLightWidget : public QWidget
         Q_OBJECT
 
     public:
-        explicit PointLightWidget(QWidget *parent = nullptr);
+        explicit PointLightWidget(MainWindow* window, QWidget *parent = nullptr);
         ~PointLightWidget();
 
         void setPointLight(Sahara::PointLight* pointLight);
@@ -23,6 +26,7 @@ class PointLightWidget : public QWidget
         void updateFields();
 
     private:
+        MainWindow* _window;
         Ui::PointLightWidget *ui;
 
         Sahara::PointLight* _pointLight;
@@ -30,7 +34,10 @@ class PointLightWidget : public QWidget
         void populateFieldsFromPointLight();
 
     private slots:
-        void fieldValueChanged();
+        void colorChanged(const QColor& color);
+        void constantAttenuationChanged(double value);
+        void linearAttenuationChanged(double value);
+        void quadraticAttenuationChanged(double value);
 };
 
 #endif // POINTLIGHTWIDGET_H
