@@ -37,6 +37,8 @@ void ModelWidget::setModel(Sahara::Model* model)
     if (_geometryModel)
         delete _geometryModel;
 
+    _materialIdsByName.clear();
+
     _geometryModel = new GeometryModel(*model);
     _geometryItemModel = new GeometryItemModel(*_geometryModel);
     ui->geometryTreeView->setModel(_geometryItemModel);
@@ -45,7 +47,8 @@ void ModelWidget::setModel(Sahara::Model* model)
 
     ui->materialsComboBox->clear();
     for (Sahara::MaterialDict::const_iterator i = _model->materials().begin(); i != _model->materials().end(); i++) {
-        ui->materialsComboBox->addItem(i.key());
+        _materialIdsByName[i.value()->name()] = i.key();
+        ui->materialsComboBox->addItem(i.value()->name());
     }
 
     ui->animationsComboBox->blockSignals(true);
@@ -82,7 +85,7 @@ void ModelWidget::materialsComboBoxCurrentTextChanged(const QString& text)
         return;
     }
 
-    ui->materialWidget->setMaterial(_model->materials()[text]);
+    ui->materialWidget->setMaterial(_model->materials()[_materialIdsByName[text]]);
     ui->materialWidget->setVisible(true);
 }
 

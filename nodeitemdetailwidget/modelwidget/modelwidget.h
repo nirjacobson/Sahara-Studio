@@ -35,6 +35,8 @@ class ModelWidget : public QWidget
         GeometryModel* _geometryModel;
         GeometryItemModel* _geometryItemModel;
 
+        QMap<QString, QString> _materialIdsByName;
+
     private slots:
         void materialsComboBoxCurrentTextChanged(const QString& text);
         void animationsComboBoxCurrentTextChanged(const QString& text);
