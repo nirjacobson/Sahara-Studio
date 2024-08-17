@@ -151,7 +151,14 @@ void SceneGraphWidget::addModelRequested()
         index = ui->sceneGraphTreeView->selectionModel()->selectedIndexes().first();
     }
 
-    Sahara::Model* model = Sahara::Model::fromCollada(_sceneWidget.renderer(), fileName);
+    Sahara::Model* model;
+    Sahara::OpenGLSceneWidget* glSceneWidget;
+    if ((glSceneWidget = dynamic_cast<Sahara::OpenGLSceneWidget*>(&_sceneWidget))) {
+        model = Sahara::OpenGLModel::fromCollada(fileName);
+    } else {
+        model = Sahara::VulkanModel::fromCollada(dynamic_cast<Sahara::VulkanRenderer*>(_sceneWidget.renderer()), fileName);
+    }
+
     QString name = QFileInfo(fileName).baseName();
     name[0] = name.at(0).toUpper();
 
@@ -173,6 +180,13 @@ void SceneGraphWidget::flyThroughButtonClicked()
     _sceneWidget.scene().setCameraNode(_selectedNode);
     _sceneWidget.scene().camera().setMode(Sahara::Camera::Mode::Perspective);
 
-    _sceneWidget.setFocus();
+    Sahara::OpenGLSceneWidget* glSceneWidget;
+    Sahara::VulkanSceneWidget* vkSceneWidget;
+    if ((glSceneWidget = dynamic_cast<Sahara::OpenGLSceneWidget*>(&_sceneWidget))) {
+        glSceneWidget->setFocus();
+    } else {
+        vkSceneWidget = dynamic_cast<Sahara::VulkanSceneWidget*>(&_sceneWidget);
+        vkSceneWidget->setFocus();
+    }
     _sceneWidget.flyThrough(true);
 }

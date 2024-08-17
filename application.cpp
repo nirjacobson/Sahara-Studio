@@ -1,5 +1,8 @@
 #include "application.h"
 
+const QString Application::Organization = "Nir Jacobson";
+const QString Application::ApplicationName = "Sahara Studio";
+
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv)
 {

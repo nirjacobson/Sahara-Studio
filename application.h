@@ -7,6 +7,9 @@
 class Application : public QApplication
 {
 public:
+    static const QString Organization;
+    static const QString ApplicationName;
+
     Application(int &argc, char **argv);
 
     QUndoStack& undoStack();

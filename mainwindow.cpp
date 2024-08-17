@@ -14,6 +14,31 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
 {
     ui->setupUi(this);
 
+    QSettings settings(Application::Organization, Application::ApplicationName);
+    _vulkan = settings.value("API").toString() == "Vulkan" && QVulkanInstance().create();
+    ui->actionOpenGL->setChecked(!_vulkan);
+    ui->actionVulkan->setChecked(_vulkan);
+
+    if (_vulkan) {
+        Sahara::VulkanSceneWidget* vkSceneWidget = new Sahara::VulkanSceneWidget(this);
+        _primarySceneWidget = vkSceneWidget;
+        ui->centralWidget->layout()->replaceWidget(ui->sceneWidget, vkSceneWidget);
+
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
+    } else {
+        Sahara::OpenGLSceneWidget* glSceneWidget = new Sahara::OpenGLSceneWidget(this);
+        _primarySceneWidget = glSceneWidget;
+        ui->centralWidget->layout()->replaceWidget(ui->sceneWidget, glSceneWidget);
+
+        connect(glSceneWidget, &Sahara::OpenGLSceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
+        connect(glSceneWidget, &Sahara::OpenGLSceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
+        connect(glSceneWidget, &Sahara::OpenGLSceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
+        connect(glSceneWidget, &Sahara::OpenGLSceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
+    }
+
     QAction* undoAction = _app->undoStack().createUndoAction(this, "&Undo");
     undoAction->setShortcuts(QKeySequence::Undo);
     ui->menuEdit->addAction(undoAction);
@@ -57,11 +82,6 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     _pointLightWidgetScrollArea.setWidget(_pointLightWidget);
     _sceneWidgetScrollArea.setWidget(_sceneWidget);
 
-    connect(ui->sceneWidget, &Sahara::SceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
-    connect(ui->sceneWidget, &Sahara::SceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
-    connect(ui->sceneWidget, &Sahara::SceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
-    connect(ui->sceneWidget, &Sahara::SceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
-
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newActionTriggered);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openActionTriggered);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveAsActionTriggered);
@@ -73,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     connect(ui->actionAxes, &QAction::triggered, this, &MainWindow::axesActionTriggered);
     connect(ui->actionLights, &QAction::triggered, this, &MainWindow::lightsActionTriggered);
     connect(ui->actionCameras, &QAction::triggered, this, &MainWindow::camerasActionTriggered);
+    connect(ui->actionOpenGL, &QAction::triggered, this, &MainWindow::openGLTriggered);
+    connect(ui->actionVulkan, &QAction::triggered, this, &MainWindow::vulkanTriggered);
 }
 
 MainWindow::~MainWindow()
@@ -85,10 +107,10 @@ bool MainWindow::event(QEvent* event)
 {
     switch (event->type()) {
         case QEvent::WindowBlocked:
-            ui->sceneWidget->pause();
+            _primarySceneWidget->pause();
             break;
         case QEvent::WindowUnblocked:
-            ui->sceneWidget->resume();
+            _primarySceneWidget->resume();
             break;
         default:
             break;
@@ -133,33 +155,33 @@ Sahara::Renderer* MainWindow::renderer()
 
 void MainWindow::sceneWidgetInitialized()
 {
-    ui->sceneWidget->showGrid(true);
+    _primarySceneWidget->showGrid(true);
 
-    _sceneGraphWidget = new SceneGraphWidget(this, *ui->sceneWidget);
+    _sceneGraphWidget = new SceneGraphWidget(this, *_primarySceneWidget);
     connect(_sceneGraphWidget, &SceneGraphWidget::selectionChanged, this, &MainWindow::sceneGraphWidgetSelectionChanged);
     ui->sceneGraphDockWidget->setWidget(_sceneGraphWidget);
 
-    _toolsWidget = new ToolsWidget(this, ui->sceneWidget->scene());
+    _toolsWidget = new ToolsWidget(this, _primarySceneWidget->scene());
     connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
-    connect(ui->sceneWidget, &Sahara::SceneWidget::mouseMoved, _toolsWidget, &ToolsWidget::mouseMoved);
-    connect(ui->sceneWidget, &Sahara::SceneWidget::mousePressed, _toolsWidget, &ToolsWidget::mousePressed);
+    connect(dynamic_cast<QObject*>(_primarySceneWidget), SIGNAL(mouseMoved(const QVector2D&)), _toolsWidget, SLOT(mouseMoved(const QVector2D&)));
+    connect(dynamic_cast<QObject*>(_primarySceneWidget), SIGNAL(mousePressed(const QVector2D&)), _toolsWidget, SLOT(mousePressed(const QVector2D&)));
     ui->toolsDockWidget->setWidget(_toolsWidget);
 
-    _renderer = ui->sceneWidget->renderer();
+    _renderer = _primarySceneWidget->renderer();
 }
 
 void MainWindow::sceneWidgetSizeChanged(QSize)
 {
-    if (_selectedNode == &ui->sceneWidget->scene().cameraNode()) {
+    if (_selectedNode == &_primarySceneWidget->scene().cameraNode()) {
         _cameraWidget->updateFields();
     }
 }
 
 void MainWindow::sceneWidgetCameraMotion()
 {
-    Sahara::Node& cameraNode = ui->sceneWidget->scene().cameraNode();
+    Sahara::Node& cameraNode = _primarySceneWidget->scene().cameraNode();
 
-    _app->undoStack().push(new TransformNodeCommand(this, &cameraNode, ui->sceneWidget->cameraControl().update(cameraNode)));
+    _app->undoStack().push(new TransformNodeCommand(this, &cameraNode, _primarySceneWidget->cameraControl().update(cameraNode)));
 }
 
 void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
@@ -173,8 +195,8 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
         Sahara::Camera* camera;
         Sahara::PointLight* pointLight;
         Sahara::Model* model;
-        if (node == &ui->sceneWidget->scene().root()) {
-            _sceneWidget->setScene(&ui->sceneWidget->scene());
+        if (node == &_primarySceneWidget->scene().root()) {
+            _sceneWidget->setScene(&_primarySceneWidget->scene());
             ui->nodeItemDockWidget->setWidget(&_sceneWidgetScrollArea);
         } else if ((camera = dynamic_cast<Sahara::Camera*>(&node->item()))) {
             _cameraWidget->setCamera(camera);
@@ -196,7 +218,7 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
 
 void MainWindow::newActionTriggered()
 {
-    ui->sceneWidget->newScene();
+    _primarySceneWidget->newScene();
 }
 
 void MainWindow::openActionTriggered()
@@ -217,8 +239,8 @@ void MainWindow::openActionTriggered()
         return;
     }
 
-    Sahara::Scene* scene = Sahara::JSON::toScene(ui->sceneWidget->renderer(), QJsonDocument::fromJson(file.readAll()).object());
-    ui->sceneWidget->setScene(scene);
+    Sahara::Scene* scene = Sahara::JSON::toScene(_primarySceneWidget->renderer(), QJsonDocument::fromJson(file.readAll()).object());
+    _primarySceneWidget->setScene(scene);
 }
 
 void MainWindow::saveAsActionTriggered()
@@ -240,13 +262,13 @@ void MainWindow::saveAsActionTriggered()
         return;
     }
 
-    QJsonDocument saveDocument = QJsonDocument(Sahara::JSON::fromScene(&ui->sceneWidget->scene()));
+    QJsonDocument saveDocument = QJsonDocument(Sahara::JSON::fromScene(&_primarySceneWidget->scene()));
     file.write(saveDocument.toJson(QJsonDocument::JsonFormat::Indented));
 }
 
 void MainWindow::sceneLoaded()
 {
-    _toolsWidget->setScene(ui->sceneWidget->scene());
+    _toolsWidget->setScene(_primarySceneWidget->scene());
     _sceneGraphWidget->reset();
     ui->nodeDockWidget->setWidget(nullptr);
     ui->nodeItemDockWidget->setWidget(nullptr);
@@ -254,36 +276,58 @@ void MainWindow::sceneLoaded()
 
 void MainWindow::viewMenuAboutToShow()
 {
-    ui->actionFPS->setChecked(ui->sceneWidget->showFPS());
-    ui->actionGrid->setChecked(ui->sceneWidget->showGrid());
-    ui->actionAxes->setChecked(ui->sceneWidget->showGrid() && ui->sceneWidget->showAxes());
-    ui->actionAxes->setEnabled(ui->sceneWidget->showGrid());
-    ui->actionLights->setChecked(ui->sceneWidget->showLights());
-    ui->actionCameras->setChecked(ui->sceneWidget->showCameras());
+    ui->actionFPS->setChecked(_primarySceneWidget->showFPS());
+    ui->actionGrid->setChecked(_primarySceneWidget->showGrid());
+    ui->actionAxes->setChecked(_primarySceneWidget->showGrid() && _primarySceneWidget->showAxes());
+    ui->actionAxes->setEnabled(_primarySceneWidget->showGrid());
+    ui->actionLights->setChecked(_primarySceneWidget->showLights());
+    ui->actionCameras->setChecked(_primarySceneWidget->showCameras());
 }
 
 void MainWindow::fpsActionTriggered()
 {
-    ui->sceneWidget->showFPS(!ui->sceneWidget->showFPS());
+    _primarySceneWidget->showFPS(!_primarySceneWidget->showFPS());
 }
 
 void MainWindow::gridActionTriggered()
 {
-    ui->sceneWidget->showGrid(!ui->sceneWidget->showGrid());
+    _primarySceneWidget->showGrid(!_primarySceneWidget->showGrid());
 }
 
 void MainWindow::axesActionTriggered()
 {
-    ui->sceneWidget->showAxes(!ui->sceneWidget->showAxes());
+    _primarySceneWidget->showAxes(!_primarySceneWidget->showAxes());
 }
 
 void MainWindow::lightsActionTriggered()
 {
-    ui->sceneWidget->showLights(!ui->sceneWidget->showLights());
+    _primarySceneWidget->showLights(!_primarySceneWidget->showLights());
 }
 
 void MainWindow::camerasActionTriggered()
 {
-    ui->sceneWidget->showCameras(!ui->sceneWidget->showCameras());
+    _primarySceneWidget->showCameras(!_primarySceneWidget->showCameras());
+}
+
+void MainWindow::openGLTriggered()
+{
+    ui->actionOpenGL->setChecked(!_vulkan);
+    ui->actionVulkan->setChecked(_vulkan);
+
+    QSettings settings(Application::Organization, Application::ApplicationName);
+    settings.setValue("API", "OpenGL");
+
+    QMessageBox::information(this, "Please restart the program", "Please restart the program for the changes to take effect.");
+}
+
+void MainWindow::vulkanTriggered()
+{
+    ui->actionOpenGL->setChecked(!_vulkan);
+    ui->actionVulkan->setChecked(_vulkan);
+
+    QSettings settings(Application::Organization, Application::ApplicationName);
+    settings.setValue("API", "Vulkan");
+
+    QMessageBox::information(this, "Please restart the program", "Please restart the program for the changes to take effect.");
 }
 

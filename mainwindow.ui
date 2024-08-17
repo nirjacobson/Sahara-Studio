@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="Sahara::SceneWidget" name="sceneWidget" native="true"/>
+     <widget class="QWidget" name="sceneWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -56,9 +56,17 @@
      <string>&amp;Edit</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuAPI">
+    <property name="title">
+     <string>&amp;API</string>
+    </property>
+    <addaction name="actionOpenGL"/>
+    <addaction name="actionVulkan"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
+   <addaction name="menuAPI"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -67,7 +75,7 @@
   </widget>
   <widget class="QDockWidget" name="toolsDockWidget">
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFeature::NoDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string/>
@@ -91,7 +99,7 @@
     </size>
    </property>
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFeature::NoDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string/>
@@ -115,7 +123,7 @@
     </size>
    </property>
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFeature::NoDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string/>
@@ -141,7 +149,7 @@
     </size>
    </property>
    <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetFeature::NoDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string/>
@@ -211,16 +219,24 @@
     <string>&amp;Cameras</string>
    </property>
   </action>
+  <action name="actionOpenGL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;OpenGL</string>
+   </property>
+  </action>
+  <action name="actionVulkan">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Vulkan</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>Sahara::SceneWidget</class>
-   <extends>QWidget</extends>
-   <header>widgets/scenewidget/scenewidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

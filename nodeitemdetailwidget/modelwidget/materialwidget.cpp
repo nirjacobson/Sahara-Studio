@@ -53,17 +53,35 @@ void MaterialWidget::populateFieldsFromMaterial()
     ui->specularColorWidget->setValue(_material->specular());
     ui->shininessDoubleSpinBox->setValue(static_cast<double>(_material->shininess()));
 
-    if (_material->image().has_value()) {
-        ui->diffuseLabel->setText("Image:");
-        QString url = QUrl::fromPercentEncoding((*_material->image())->uri().toLatin1());
-        ui->imageFileLink->setText(QFileInfo(url).fileName());
-        ui->imageFileLink->setVisible(true);
-        ui->diffuseColorWidget->setVisible(false);
+    Sahara::OpenGLMaterial* glMaterial;
+    Sahara::VulkanMaterial* vkMaterial;
+    if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
+        if (glMaterial->image().has_value()) {
+            ui->diffuseLabel->setText("Image:");
+            QString url = QUrl::fromPercentEncoding((*glMaterial->image())->uri().toLatin1());
+            ui->imageFileLink->setText(QFileInfo(url).fileName());
+            ui->imageFileLink->setVisible(true);
+            ui->diffuseColorWidget->setVisible(false);
+        } else {
+            ui->diffuseLabel->setText("Diffuse:");
+            ui->diffuseColorWidget->setValue(_material->diffuse());
+            ui->imageFileLink->setVisible(false);
+            ui->diffuseColorWidget->setVisible(true);
+        }
     } else {
-        ui->diffuseLabel->setText("Diffuse:");
-        ui->diffuseColorWidget->setValue(_material->diffuse());
-        ui->imageFileLink->setVisible(false);
-        ui->diffuseColorWidget->setVisible(true);
+        vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
+        if (vkMaterial->image().has_value()) {
+            ui->diffuseLabel->setText("Image:");
+            QString url = QUrl::fromPercentEncoding((*vkMaterial->image())->uri().toLatin1());
+            ui->imageFileLink->setText(QFileInfo(url).fileName());
+            ui->imageFileLink->setVisible(true);
+            ui->diffuseColorWidget->setVisible(false);
+        } else {
+            ui->diffuseLabel->setText("Diffuse:");
+            ui->diffuseColorWidget->setValue(_material->diffuse());
+            ui->imageFileLink->setVisible(false);
+            ui->diffuseColorWidget->setVisible(true);
+        }
     }
 
     ui->emissionColorWidget->blockSignals(false);
@@ -100,6 +118,14 @@ void MaterialWidget::shininessChanged(double value)
 
 void MaterialWidget::imageFileLinkClicked()
 {
-    QString url = QUrl::fromPercentEncoding((*_material->image())->uri().toLatin1());
+    QString url;
+    Sahara::OpenGLMaterial* glMaterial;
+    Sahara::VulkanMaterial* vkMaterial;
+    if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
+        url = QUrl::fromPercentEncoding((*glMaterial->image())->uri().toLatin1());
+    } else {
+        vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
+        url = QUrl::fromPercentEncoding((*vkMaterial->image())->uri().toLatin1());
+    }
     QDesktopServices::openUrl(QUrl::fromLocalFile(url));
 }

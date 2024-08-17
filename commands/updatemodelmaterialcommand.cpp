@@ -42,14 +42,24 @@ UpdateModelMaterialCommand::UpdateModelMaterialCommand(MainWindow* window, Sahar
     : _window(window)
     , _material(material)
     , _parameter(Parameter::Image)
-    , _uriBefore((*material->image())->uri())
     , _uriAfter(imageURI)
 {
+    Sahara::OpenGLMaterial* glMaterial;
+    Sahara::VulkanMaterial* vkMaterial;
+
+    if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(material))) {
+        _uriBefore = (*glMaterial->image())->uri();
+    } else {
+        vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(material);
+        _uriBefore = (*vkMaterial->image())->uri();
+    }
     setText("update material");
 }
 
 void UpdateModelMaterialCommand::undo()
 {
+    Sahara::OpenGLMaterial* glMaterial;
+    Sahara::VulkanMaterial* vkMaterial;
     switch (_parameter) {
         case EmissionColor:
             _material->setEmission(_colorBefore);
@@ -67,10 +77,18 @@ void UpdateModelMaterialCommand::undo()
             _material->setShininess(_valueBefore);
             break;
         case Image:
-            Sahara::Image* oldImage = *_material->image();
-            Sahara::Image* newImage = new Sahara::Image(_window->renderer(), oldImage->id(), _uriBefore);
-            _material->image() = newImage;
-            delete oldImage;
+            if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
+                Sahara::OpenGLImage* oldImage = dynamic_cast<Sahara::OpenGLImage*>(*glMaterial->image());
+                Sahara::OpenGLImage* newImage = new Sahara::OpenGLImage(oldImage->id(), _uriBefore);
+                glMaterial->image() = newImage;
+                delete oldImage;
+            } else {
+                vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
+                Sahara::VulkanImage* oldImage = dynamic_cast<Sahara::VulkanImage*>(*vkMaterial->image());
+                Sahara::VulkanImage* newImage = new Sahara::VulkanImage(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), oldImage->id(), _uriBefore);
+                vkMaterial->image() = newImage;
+                delete oldImage;
+            }
             break;
     }
 
@@ -79,27 +97,37 @@ void UpdateModelMaterialCommand::undo()
 
 void UpdateModelMaterialCommand::redo()
 {
+    Sahara::OpenGLMaterial* glMaterial;
+    Sahara::VulkanMaterial* vkMaterial;
     switch (_parameter) {
-    case EmissionColor:
+        case EmissionColor:
             _material->setEmission(_colorAfter);
             break;
-    case AmbientColor:
+        case AmbientColor:
             _material->setAmbient(_colorAfter);
             break;
-    case DiffuseColor:
+        case DiffuseColor:
             _material->setDiffuse(_colorAfter);
             break;
-    case SpecularColor:
+        case SpecularColor:
             _material->setSpecular(_colorAfter);
             break;
-    case Shininess:
+        case Shininess:
             _material->setShininess(_valueAfter);
             break;
-    case Image:
-            Sahara::Image* oldImage = *_material->image();
-            Sahara::Image* newImage = new Sahara::Image(_window->renderer(), oldImage->id(), _uriAfter);
-            _material->image() = newImage;
-            delete oldImage;
+        case Image:
+            if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
+                Sahara::OpenGLImage* oldImage = dynamic_cast<Sahara::OpenGLImage*>(*glMaterial->image());
+                Sahara::OpenGLImage* newImage = new Sahara::OpenGLImage(oldImage->id(), _uriAfter);
+                glMaterial->image() = newImage;
+                delete oldImage;
+            } else {
+                vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
+                Sahara::VulkanImage* oldImage = dynamic_cast<Sahara::VulkanImage*>(*vkMaterial->image());
+                Sahara::VulkanImage* newImage = new Sahara::VulkanImage(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), oldImage->id(), _uriAfter);
+                vkMaterial->image() = newImage;
+                delete oldImage;
+            }
             break;
     }
 

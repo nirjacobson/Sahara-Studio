@@ -5,6 +5,7 @@
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QJsonDocument>
+#include <QSettings>
 
 #include "toolswidget/toolswidget.h"
 #include "scenegraphwidget/scenegraphwidget.h"
@@ -13,6 +14,8 @@
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "nodeitemdetailwidget/scenewidget/scenewidget.h"
+#include "widgets/scenewidget/openglscenewidget.h"
+#include "widgets/scenewidget/vulkanscenewidget.h"
 #include "json/json.h"
 #include "application.h"
 #include "commands/transformnodecommand.h"
@@ -45,6 +48,8 @@ class MainWindow : public QMainWindow
     private:
         Application* _app;
         Ui::MainWindow *ui;
+        bool _vulkan;
+        Sahara::SceneWidget* _primarySceneWidget;
         ToolsWidget* _toolsWidget;
         SceneGraphWidget* _sceneGraphWidget;
         NodeDetailWidget* _nodeDetailWidget;
@@ -75,6 +80,8 @@ class MainWindow : public QMainWindow
         void axesActionTriggered();
         void lightsActionTriggered();
         void camerasActionTriggered();
+        void openGLTriggered();
+        void vulkanTriggered();
 };
 
 #endif // MAINWINDOW_H
