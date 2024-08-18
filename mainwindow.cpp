@@ -14,7 +14,12 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
 {
     ui->setupUi(this);
 
+#ifdef Q_OS_WIN
+    QSettings settings(Application::SettingsFile, QSettings::IniFormat);
+#else
     QSettings settings(Application::Organization, Application::ApplicationName);
+#endif
+
     _vulkan = settings.value("API").toString() == "Vulkan" && QVulkanInstance().create();
     ui->actionOpenGL->setChecked(!_vulkan);
     ui->actionVulkan->setChecked(_vulkan);
@@ -314,7 +319,12 @@ void MainWindow::openGLTriggered()
     ui->actionOpenGL->setChecked(!_vulkan);
     ui->actionVulkan->setChecked(_vulkan);
 
+#ifdef Q_OS_WIN
+    QSettings settings(Application::SettingsFile, QSettings::IniFormat);
+#else
     QSettings settings(Application::Organization, Application::ApplicationName);
+#endif
+
     settings.setValue("API", "OpenGL");
 
     QMessageBox::information(this, "Please restart the program", "Please restart the program for the changes to take effect.");
@@ -325,7 +335,12 @@ void MainWindow::vulkanTriggered()
     ui->actionOpenGL->setChecked(!_vulkan);
     ui->actionVulkan->setChecked(_vulkan);
 
+#ifdef Q_OS_WIN
+    QSettings settings(Application::SettingsFile, QSettings::IniFormat);
+#else
     QSettings settings(Application::Organization, Application::ApplicationName);
+#endif
+
     settings.setValue("API", "Vulkan");
 
     QMessageBox::information(this, "Please restart the program", "Please restart the program for the changes to take effect.");

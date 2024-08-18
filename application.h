@@ -9,6 +9,7 @@ class Application : public QApplication
 public:
     static const QString Organization;
     static const QString ApplicationName;
+    static const QString SettingsFile;
 
     Application(int &argc, char **argv);
 
