@@ -137,15 +137,15 @@ if (LINUX)
                                                 Qt${QT_VERSION_MAJOR}::Xml
                                                 Qt${QT_VERSION_MAJOR}::OpenGL
                                                 Qt${QT_VERSION_MAJOR}::OpenGLWidgets
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-Debug/libQCollada.so
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-Debug/libSahara.so)
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/libQCollada.so
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/libSahara.so)
 elseif (WIN32)
     target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
                                                 Qt${QT_VERSION_MAJOR}::Xml
                                                 Qt${QT_VERSION_MAJOR}::OpenGL
                                                 Qt${QT_VERSION_MAJOR}::OpenGLWidgets
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-Debug/QCollada.lib
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-Debug/Sahara.lib)
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/QCollada.lib
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/Sahara.lib)
 endif()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
