@@ -22,6 +22,10 @@ include_directories("../QCollada")
 include_directories("../Sahara")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+if (APPLE)
+    include_directories("/Users/nir/MoltenVK/Package/Release/MoltenVK/include")
+endif()
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Sahara-Studio
         MANUAL_FINALIZATION
@@ -146,6 +150,13 @@ elseif (WIN32)
                                                 Qt${QT_VERSION_MAJOR}::OpenGLWidgets
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/QCollada.lib
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/Sahara.lib)
+elseif (APPLE)
+    target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+                                                Qt${QT_VERSION_MAJOR}::Xml
+                                                Qt${QT_VERSION_MAJOR}::OpenGL
+                                                Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/libQCollada.dylib
+                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/libSahara.dylib)
 endif()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
