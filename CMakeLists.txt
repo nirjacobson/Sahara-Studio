@@ -12,12 +12,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-)
-
 include_directories("../QCollada")
 include_directories("../Sahara")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -26,10 +20,12 @@ if (APPLE)
     include_directories("/Users/nir/MoltenVK/Package/Release/MoltenVK/include")
 endif()
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Sahara-Studio
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
+set(CMAKE_OSX_ARCHITECTURES x86_64 arm64)
+
+set(PROJECT_SOURCES
+        main.cpp
+        mainwindow.cpp
+        mainwindow.h
         colorwidget/colorwidget.cpp
         colorwidget/colorwidget.h
         icons/add.png
@@ -117,7 +113,32 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         commands/removescenegraphitemcommand.cpp
         commands/transformnodecommand.h
         commands/transformnodecommand.cpp
-    )
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    if (WIN32)
+        set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/resources/sahara-studio.rc")
+        qt_add_executable(Sahara-Studio
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+            ${app_icon_resource_windows}
+        )
+    elseif (LINUX)
+        qt_add_executable(Sahara-Studio
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+        )
+    elseif (APPLE)
+        set(MACOSX_BUNDLE_ICON_FILE sahara-studio.icns)
+        set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/resources/sahara-studio.icns")
+        set_source_files_properties(${app_icon_macos} PROPERTIES
+                   MACOSX_PACKAGE_LOCATION "Resources")
+        qt_add_executable(Sahara-Studio
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+            ${app_icon_macos}
+        )
+    endif()
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Sahara-Studio APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
