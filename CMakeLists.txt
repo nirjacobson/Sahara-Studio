@@ -131,12 +131,17 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     elseif (APPLE)
         set(MACOSX_BUNDLE_ICON_FILE sahara-studio.icns)
         set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/resources/sahara-studio.icns")
+        set(moltenvk_lib "/Users/nir/MoltenVK/Package/Release/MoltenVK/dynamic/dylib/macOS/libMoltenVK.dylib")
         set_source_files_properties(${app_icon_macos} PROPERTIES
                    MACOSX_PACKAGE_LOCATION "Resources")
+        set_source_files_properties(${moltenvk_lib} PROPERTIES
+                   MACOSX_PACKAGE_LOCATION "Frameworks")
         qt_add_executable(Sahara-Studio
             MANUAL_FINALIZATION
             ${PROJECT_SOURCES}
             ${app_icon_macos}
+            ${moltenvk_lib}
+
         )
     endif()
 # Define target properties for Android with Qt 6 as:
