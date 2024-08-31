@@ -100,6 +100,8 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     connect(ui->actionCameras, &QAction::triggered, this, &MainWindow::camerasActionTriggered);
     connect(ui->actionOpenGL, &QAction::triggered, this, &MainWindow::openGLTriggered);
     connect(ui->actionVulkan, &QAction::triggered, this, &MainWindow::vulkanTriggered);
+
+    ui->menuBar->setNativeMenuBar(false);
 }
 
 MainWindow::~MainWindow()
