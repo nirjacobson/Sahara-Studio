@@ -9,6 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(LINUX_ARM OFF)
+set(WIN32_ARM OFF)
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
@@ -184,12 +185,21 @@ if (LINUX)
                                                     ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop_x64-${CMAKE_BUILD_TYPE}/libSahara.so)
     endif()
 elseif (WIN32)
-    target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
-                                                Qt${QT_VERSION_MAJOR}::Xml
-                                                Qt${QT_VERSION_MAJOR}::OpenGL
-                                                Qt${QT_VERSION_MAJOR}::OpenGLWidgets
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/QCollada.lib
-                                                ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/Sahara.lib)
+    if (WIN32_ARM)
+        target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+                                                    Qt${QT_VERSION_MAJOR}::Xml
+                                                    Qt${QT_VERSION_MAJOR}::OpenGL
+                                                    Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+                                                    ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop-${CMAKE_BUILD_TYPE}/QCollada.lib
+                                                    ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop-${CMAKE_BUILD_TYPE}/Sahara.lib)
+    else()
+        target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+                                                    Qt${QT_VERSION_MAJOR}::Xml
+                                                    Qt${QT_VERSION_MAJOR}::OpenGL
+                                                    Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+                                                    ${CMAKE_CURRENT_SOURCE_DIR}/../QCollada/build/Desktop_x64-${CMAKE_BUILD_TYPE}/QCollada.lib
+                                                    ${CMAKE_CURRENT_SOURCE_DIR}/../Sahara/build/Desktop_x64-${CMAKE_BUILD_TYPE}/Sahara.lib)
+    endif()
 elseif (APPLE)
     target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
                                                 Qt${QT_VERSION_MAJOR}::Xml
