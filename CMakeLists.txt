@@ -14,10 +14,6 @@ set(WIN32_ARM OFF)
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
 
-if (NOT WIN32 AND NOT APPLE AND NOT LINUX_ARM)
-    include_directories("/usr/x86_64-pc-linux-gnu/usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/")
-endif()
-
 include_directories("../QCollada")
 include_directories("../Sahara")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
