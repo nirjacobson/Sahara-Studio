@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/asset/light/pointlight.h"
+#include <Sahara/scene/asset/light/pointlight.h>
 #include "commands/updatepointlightcommand.h"
 
 class MainWindow;

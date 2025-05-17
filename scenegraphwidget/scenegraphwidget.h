@@ -6,8 +6,8 @@
 #include <QFileDialog>
 #include <QMenu>
 
-#include "widgets/scenewidget/scenewidget.h"
-#include "scene/node/node.h"
+#include <Sahara/widgets/scenewidget/scenewidget.h>
+#include <Sahara/scene/node/node.h>
 #include "scenegraphitemmodel.h"
 #include "commands/addscenegraphitemcommand.h"
 #include "commands/removescenegraphitemcommand.h"

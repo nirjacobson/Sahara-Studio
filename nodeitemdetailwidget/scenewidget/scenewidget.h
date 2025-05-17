@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/scene.h"
+#include <Sahara/scene/scene.h>
 #include "commands/updatesceneambientlightcommand.h"
 
 class MainWindow;

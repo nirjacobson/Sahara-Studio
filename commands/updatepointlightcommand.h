@@ -3,7 +3,7 @@
 
 #include <QUndoCommand>
 
-#include "scene/asset/light/pointlight.h"
+#include <Sahara/scene/asset/light/pointlight.h>
 
 class MainWindow;
 

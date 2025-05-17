@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/asset/camera.h"
+#include <Sahara/scene/asset/camera.h>
 #include "commands/updatecameracommand.h"
 
 class MainWindow;

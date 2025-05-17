@@ -2,7 +2,7 @@
 #define SETMODELANIMATIONCOMMAND_H
 
 #include <QUndoCommand>
-#include "scene/model.h"
+#include <Sahara/scene/model.h>
 
 class MainWindow;
 

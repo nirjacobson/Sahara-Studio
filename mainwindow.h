@@ -14,12 +14,12 @@
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "nodeitemdetailwidget/scenewidget/scenewidget.h"
-#include "widgets/scenewidget/openglscenewidget.h"
-#include "widgets/scenewidget/vulkanscenewidget.h"
-#include "json/json.h"
+#include <Sahara/widgets/scenewidget/openglscenewidget.h>
+#include <Sahara/widgets/scenewidget/vulkanscenewidget.h>
+#include <Sahara/json/json.h>
 #include "application.h"
 #include "commands/transformnodecommand.h"
-#include "render/renderer.h"
+#include <Sahara/render/renderer.h>
 
 namespace Ui {
 class MainWindow;

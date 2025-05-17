@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/scene.h"
+#include <Sahara/scene/scene.h>
 #include "tool/select.h"
 #include "tool/move.h"
 #include "commands/transformnodecommand.h"

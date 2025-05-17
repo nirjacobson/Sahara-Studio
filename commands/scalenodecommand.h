@@ -3,7 +3,7 @@
 
 #include <QUndoCommand>
 
-#include "scene/node/node.h"
+#include <Sahara/scene/node/node.h>
 
 class MainWindow;
 

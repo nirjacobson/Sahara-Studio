@@ -4,9 +4,9 @@
 #include <QAbstractItemModel>
 #include <QIcon>
 
-#include "scene/scene.h"
-#include "scene/node/node.h"
-#include "scene/node/nodeitem.h"
+#include <Sahara/scene/scene.h>
+#include <Sahara/scene/node/node.h>
+#include <Sahara/scene/node/nodeitem.h>
 
 class SceneGraphItemModel : public QAbstractItemModel
 {

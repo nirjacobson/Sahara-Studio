@@ -7,7 +7,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-#include "scene/asset/material.h"
+#include <Sahara/scene/asset/material.h>
 #include "colorwidget/colorwidget.h"
 #include "linkwidget/linkwidget.h"
 #include "commands/updatemodelmaterialcommand.h"

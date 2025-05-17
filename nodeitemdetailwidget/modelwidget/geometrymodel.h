@@ -3,7 +3,7 @@
 
 #include <QList>
 
-#include "scene/model.h"
+#include <Sahara/scene/model.h>
 
 class GeometryModel
 {

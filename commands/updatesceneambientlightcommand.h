@@ -2,8 +2,8 @@
 #define UPDATESCENEAMBIENTLIGHTCOMMAND_H
 
 #include <QUndoCommand>
-#include "scene/scene.h"
-#include "scene/asset/light/ambientlight.h"
+#include <Sahara/scene/scene.h>
+#include <Sahara/scene/asset/light/ambientlight.h>
 
 class MainWindow;
 

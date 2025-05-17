@@ -5,7 +5,7 @@
 #include <QVector4D>
 
 #include "tool.h"
-#include "scene/node/node.h"
+#include <Sahara/scene/node/node.h>
 
 class Select : public Tool
 {

@@ -5,7 +5,7 @@
 #include <QtMath>
 
 #include "application.h"
-#include "scene/node/node.h"
+#include <Sahara/scene/node/node.h>
 #include "commands/positionnodecommand.h"
 #include "commands/rotatenodecommand.h"
 #include "commands/scalenodecommand.h"

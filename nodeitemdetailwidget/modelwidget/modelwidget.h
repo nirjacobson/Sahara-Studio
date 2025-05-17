@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "scene/model.h"
+#include <Sahara/scene/model.h>
 #include "geometrymodel.h"
 #include "geometryitemmodel.h"
 #include "commands/setmodelanimationcommand.h"

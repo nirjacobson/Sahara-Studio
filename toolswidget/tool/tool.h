@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector2D>
 
-#include "scene/scene.h"
+#include <Sahara/scene/scene.h>
 
 class Tool : public QObject
 {

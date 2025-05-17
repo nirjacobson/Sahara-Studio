@@ -3,7 +3,7 @@
 
 #include <QUndoCommand>
 
-#include "scene/asset/material.h"
+#include <Sahara/scene/asset/material.h>
 
 class MainWindow;
 
