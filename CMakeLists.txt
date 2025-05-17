@@ -167,8 +167,8 @@ if (LINUX)
                                               Qt${QT_VERSION_MAJOR}::Xml
                                               Qt${QT_VERSION_MAJOR}::OpenGL
                                               Qt${QT_VERSION_MAJOR}::OpenGLWidgets
-                                              QCollada
-                                              Sahara)
+                                              Sahara
+					      QCollada)
 elseif (WIN32)
     if (WIN32_ARM)
         target_link_libraries(Sahara-Studio PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
