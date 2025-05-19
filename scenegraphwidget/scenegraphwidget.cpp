@@ -155,9 +155,12 @@ void SceneGraphWidget::addModelRequested()
     Sahara::OpenGLSceneWidget* glSceneWidget;
     if ((glSceneWidget = dynamic_cast<Sahara::OpenGLSceneWidget*>(&_sceneWidget))) {
         model = Sahara::OpenGLModel::fromCollada(fileName);
-    } else {
+    }
+#ifdef VULKAN
+    else {
         model = Sahara::VulkanModel::fromCollada(dynamic_cast<Sahara::VulkanRenderer*>(_sceneWidget.renderer()), fileName);
     }
+#endif
 
     QString name = QFileInfo(fileName).baseName();
     name[0] = name.at(0).toUpper();
