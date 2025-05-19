@@ -68,7 +68,9 @@ void MaterialWidget::populateFieldsFromMaterial()
             ui->imageFileLink->setVisible(false);
             ui->diffuseColorWidget->setVisible(true);
         }
-    } else {
+    }
+#ifdef VULKAN
+    else {
         vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
         if (vkMaterial->image().has_value()) {
             ui->diffuseLabel->setText("Image:");
@@ -83,7 +85,7 @@ void MaterialWidget::populateFieldsFromMaterial()
             ui->diffuseColorWidget->setVisible(true);
         }
     }
-
+#endif
     ui->emissionColorWidget->blockSignals(false);
     ui->ambientColorWidget->blockSignals(false);
     ui->diffuseColorWidget->blockSignals(false);
