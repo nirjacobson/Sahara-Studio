@@ -101,6 +101,10 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     connect(ui->actionOpenGL, &QAction::triggered, this, &MainWindow::openGLTriggered);
     connect(ui->actionVulkan, &QAction::triggered, this, &MainWindow::vulkanTriggered);
 
+#ifndef VULKAN
+    ui->menuAPI->setVisible(false);
+#endif
+
     ui->menuBar->setNativeMenuBar(false);
 }
 
