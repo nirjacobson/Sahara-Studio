@@ -122,12 +122,15 @@ void MaterialWidget::imageFileLinkClicked()
 {
     QString url;
     Sahara::OpenGLMaterial* glMaterial;
-    Sahara::VulkanMaterial* vkMaterial;
     if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
         url = QUrl::fromPercentEncoding((*glMaterial->image())->uri().toLatin1());
-    } else {
+    }
+#ifdef VULKAN
+    else {
+        Sahara::VulkanMaterial* vkMaterial;
         vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
         url = QUrl::fromPercentEncoding((*vkMaterial->image())->uri().toLatin1());
     }
+#endif
     QDesktopServices::openUrl(QUrl::fromLocalFile(url));
 }
