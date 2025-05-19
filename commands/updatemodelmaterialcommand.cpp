@@ -45,21 +45,23 @@ UpdateModelMaterialCommand::UpdateModelMaterialCommand(MainWindow* window, Sahar
     , _uriAfter(imageURI)
 {
     Sahara::OpenGLMaterial* glMaterial;
-    Sahara::VulkanMaterial* vkMaterial;
 
     if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(material))) {
         _uriBefore = (*glMaterial->image())->uri();
-    } else {
+    }
+#ifdef VULKAN
+    else {
+        Sahara::VulkanMaterial* vkMaterial;
         vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(material);
         _uriBefore = (*vkMaterial->image())->uri();
     }
+#endif
     setText("update material");
 }
 
 void UpdateModelMaterialCommand::undo()
 {
     Sahara::OpenGLMaterial* glMaterial;
-    Sahara::VulkanMaterial* vkMaterial;
     switch (_parameter) {
         case EmissionColor:
             _material->setEmission(_colorBefore);
@@ -82,13 +84,17 @@ void UpdateModelMaterialCommand::undo()
                 Sahara::OpenGLImage* newImage = new Sahara::OpenGLImage(oldImage->id(), _uriBefore);
                 glMaterial->image() = newImage;
                 delete oldImage;
-            } else {
+            }
+#ifdef VULKAN
+            else {
+                Sahara::VulkanMaterial* vkMaterial;
                 vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
                 Sahara::VulkanImage* oldImage = dynamic_cast<Sahara::VulkanImage*>(*vkMaterial->image());
                 Sahara::VulkanImage* newImage = new Sahara::VulkanImage(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), oldImage->id(), _uriBefore);
                 vkMaterial->image() = newImage;
                 delete oldImage;
             }
+#endif
             break;
     }
 
@@ -98,7 +104,6 @@ void UpdateModelMaterialCommand::undo()
 void UpdateModelMaterialCommand::redo()
 {
     Sahara::OpenGLMaterial* glMaterial;
-    Sahara::VulkanMaterial* vkMaterial;
     switch (_parameter) {
         case EmissionColor:
             _material->setEmission(_colorAfter);
@@ -121,13 +126,17 @@ void UpdateModelMaterialCommand::redo()
                 Sahara::OpenGLImage* newImage = new Sahara::OpenGLImage(oldImage->id(), _uriAfter);
                 glMaterial->image() = newImage;
                 delete oldImage;
-            } else {
+            }
+#ifdef VULKAN
+            else {
+                Sahara::VulkanMaterial* vkMaterial;
                 vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
                 Sahara::VulkanImage* oldImage = dynamic_cast<Sahara::VulkanImage*>(*vkMaterial->image());
                 Sahara::VulkanImage* newImage = new Sahara::VulkanImage(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), oldImage->id(), _uriAfter);
                 vkMaterial->image() = newImage;
                 delete oldImage;
             }
+#endif
             break;
     }
 
