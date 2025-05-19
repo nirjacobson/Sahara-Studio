@@ -15,7 +15,7 @@ if (NOT DEFINED VULKAN_ENABLED)
 endif()
 
 if (VULKAN_ENABLED)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DVULKAN")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVULKAN")
 endif()
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Xml Widgets OpenGL OpenGLWidgets)
