@@ -54,7 +54,6 @@ void MaterialWidget::populateFieldsFromMaterial()
     ui->shininessDoubleSpinBox->setValue(static_cast<double>(_material->shininess()));
 
     Sahara::OpenGLMaterial* glMaterial;
-    Sahara::VulkanMaterial* vkMaterial;
     if ((glMaterial = dynamic_cast<Sahara::OpenGLMaterial*>(_material))) {
         if (glMaterial->image().has_value()) {
             ui->diffuseLabel->setText("Image:");
@@ -71,6 +70,7 @@ void MaterialWidget::populateFieldsFromMaterial()
     }
 #ifdef VULKAN
     else {
+        Sahara::VulkanMaterial* vkMaterial;
         vkMaterial = dynamic_cast<Sahara::VulkanMaterial*>(_material);
         if (vkMaterial->image().has_value()) {
             ui->diffuseLabel->setText("Image:");
