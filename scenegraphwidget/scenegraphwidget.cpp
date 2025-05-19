@@ -181,12 +181,15 @@ void SceneGraphWidget::flyThroughButtonClicked()
     _sceneWidget.scene().camera().setMode(Sahara::Camera::Mode::Perspective);
 
     Sahara::OpenGLSceneWidget* glSceneWidget;
-    Sahara::VulkanSceneWidget* vkSceneWidget;
     if ((glSceneWidget = dynamic_cast<Sahara::OpenGLSceneWidget*>(&_sceneWidget))) {
         glSceneWidget->setFocus();
-    } else {
-        vkSceneWidget = dynamic_cast<Sahara::VulkanSceneWidget*>(&_sceneWidget);
+    }
+#ifdef VULKAN
+    else {
+        Sahara::VulkanSceneWidget* vkSceneWidget = dynamic_cast<Sahara::VulkanSceneWidget*>(&_sceneWidget);
         vkSceneWidget->setFocus();
     }
+#endif
+
     _sceneWidget.flyThrough(true);
 }

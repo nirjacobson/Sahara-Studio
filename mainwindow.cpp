@@ -24,16 +24,7 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     ui->actionOpenGL->setChecked(!_vulkan);
     ui->actionVulkan->setChecked(_vulkan);
 
-    if (_vulkan) {
-        Sahara::VulkanSceneWidget* vkSceneWidget = new Sahara::VulkanSceneWidget(this);
-        _primarySceneWidget = vkSceneWidget;
-        ui->centralWidget->layout()->replaceWidget(ui->sceneWidget, vkSceneWidget);
-
-        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
-        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
-        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
-        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
-    } else {
+    if (!_vulkan) {
         Sahara::OpenGLSceneWidget* glSceneWidget = new Sahara::OpenGLSceneWidget(this);
         _primarySceneWidget = glSceneWidget;
         ui->centralWidget->layout()->replaceWidget(ui->sceneWidget, glSceneWidget);
@@ -43,6 +34,18 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
         connect(glSceneWidget, &Sahara::OpenGLSceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
         connect(glSceneWidget, &Sahara::OpenGLSceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
     }
+#ifdef VULKAN
+    else {
+        Sahara::VulkanSceneWidget* vkSceneWidget = new Sahara::VulkanSceneWidget(this);
+        _primarySceneWidget = vkSceneWidget;
+        ui->centralWidget->layout()->replaceWidget(ui->sceneWidget, vkSceneWidget);
+
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::initialized, this, &MainWindow::sceneWidgetInitialized);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sizeChanged, this, &MainWindow::sceneWidgetSizeChanged);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::cameraMotion, this, &MainWindow::sceneWidgetCameraMotion);
+        connect(vkSceneWidget, &Sahara::VulkanSceneWidget::sceneLoaded, this, &MainWindow::sceneLoaded);
+    }
+#endif
 
     QAction* undoAction = _app->undoStack().createUndoAction(this, "&Undo");
     undoAction->setShortcuts(QKeySequence::Undo);

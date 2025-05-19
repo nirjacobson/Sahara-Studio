@@ -15,7 +15,11 @@
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "nodeitemdetailwidget/scenewidget/scenewidget.h"
 #include <Sahara/widgets/scenewidget/openglscenewidget.h>
+
+#ifdef VULKAN
 #include <Sahara/widgets/scenewidget/vulkanscenewidget.h>
+#endif
+
 #include <Sahara/json/json.h>
 #include "application.h"
 #include "commands/transformnodecommand.h"
