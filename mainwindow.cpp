@@ -20,7 +20,12 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     QSettings settings(Application::Organization, Application::ApplicationName);
 #endif
 
+#ifdef VULKAN
     _vulkan = settings.value("API").toString() == "Vulkan" && QVulkanInstance().create();
+#else
+    _vulkan = false;
+#endif
+
     ui->actionOpenGL->setChecked(!_vulkan);
     ui->actionVulkan->setChecked(_vulkan);
 
