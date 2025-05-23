@@ -9,14 +9,12 @@ SceneGraphItemModel::SceneGraphItemModel(Sahara::Scene& scene, QObject* parent)
 
 QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& parent) const
 {
-    qDebug() << row << ", " << column << ", " << parent;
-
-    if (!parent.isValid()) {
-        return createIndex(row, column, &_scene.root());
-    }
-
     if (!hasIndex(row, column, parent)) {
         return QModelIndex();
+    }
+
+    if (!parent.isValid()) {
+        return createIndex(0, 0, &_scene.root());
     }
 
     Sahara::Node* parentNode = static_cast<Sahara::Node*>(parent.internalPointer());
