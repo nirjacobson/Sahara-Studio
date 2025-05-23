@@ -9,8 +9,6 @@ SceneGraphItemModel::SceneGraphItemModel(Sahara::Scene& scene, QObject* parent)
 
 QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& parent) const
 {
-    qDebug() << "index(): " << row << ", " << column << ", " << parent;
-
     if (!hasIndex(row, column, parent)) {
         return QModelIndex();
     }
@@ -29,8 +27,6 @@ QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& p
 
 QModelIndex SceneGraphItemModel::parent(const QModelIndex& child) const
 {
-    qDebug() << "parent(): " << child;
-
     if (!child.isValid())
         return QModelIndex();
 
@@ -41,15 +37,11 @@ QModelIndex SceneGraphItemModel::parent(const QModelIndex& child) const
 
     Sahara::Node& parentNode = childNode->parent();
 
-    qDebug() << "returning " << parentNode.index() << ", 0, " << &parentNode;
-
     return createIndex(parentNode.index(), 0, &parentNode);
 }
 
 int SceneGraphItemModel::rowCount(const QModelIndex& parent) const
 {
-    qDebug() << "rowCount(): " << parent;
-
     if (!parent.isValid())
         return 1;
 
