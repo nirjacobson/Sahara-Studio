@@ -224,7 +224,7 @@ install(TARGETS Sahara-Studio
 
 if (LINUX)
   install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/sahara-studio.png DESTINATION /usr/share/icons)
+    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/sahara-studio.svg DESTINATION /usr/share/icons)
   install(FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/SaharaStudio.desktop DESTINATION /usr/share/applications)
 endif()
