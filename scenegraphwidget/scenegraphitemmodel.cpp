@@ -9,6 +9,8 @@ SceneGraphItemModel::SceneGraphItemModel(Sahara::Scene& scene, QObject* parent)
 
 QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& parent) const
 {
+    qDebug() << row << ", " << column << ", " << parent;
+
     if (!hasIndex(row, column, parent)) {
         return QModelIndex();
     }
