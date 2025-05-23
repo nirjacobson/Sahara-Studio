@@ -4,25 +4,13 @@ SceneGraphItemModel::SceneGraphItemModel(Sahara::Scene& scene, QObject* parent)
     : QAbstractItemModel (parent)
     , _scene(scene)
 {
-    QModelIndex parentIndex = createIndex(0, 0, &_scene.root());
-    _scene.root().depthFirst([&](Sahara::Node& node){
-        QModelIndex childIndex = index(node.index(), 0, parentIndex);
 
-        beginInsertRows(parentIndex, node.index(), node.index());
-        endInsertRows();
-
-        parentIndex = childIndex;
-
-        return false;
-    },
-     [&](Sahara::Node& node) {
-        parentIndex = this->parent(parentIndex);
-        return false;
-     });
 }
 
 QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& parent) const
 {
+    qDebug() << row << ", " << column << ", " << parent;
+
     if (!hasIndex(row, column, parent)) {
         return QModelIndex();
     }
