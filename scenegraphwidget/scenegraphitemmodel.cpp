@@ -11,12 +11,12 @@ QModelIndex SceneGraphItemModel::index(int row, int column, const QModelIndex& p
 {
     qDebug() << row << ", " << column << ", " << parent;
 
-    if (!hasIndex(row, column, parent)) {
-        return QModelIndex();
-    }
-
     if (!parent.isValid()) {
         return createIndex(row, column, &_scene.root());
+    }
+
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
     }
 
     Sahara::Node* parentNode = static_cast<Sahara::Node*>(parent.internalPointer());
