@@ -41,6 +41,8 @@ QModelIndex SceneGraphItemModel::parent(const QModelIndex& child) const
 
     Sahara::Node& parentNode = childNode->parent();
 
+    qDebug() << "returning " << parentNode.index() << ", 0, " << &parentNode;
+
     return createIndex(parentNode.index(), 0, &parentNode);
 }
 
