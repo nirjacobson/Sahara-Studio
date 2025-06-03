@@ -23,6 +23,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml Widgets OpenGL OpenGL
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+if (WIN32)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
+endif()
+
 if (APPLE)
     include_directories("/Users/nir/MoltenVK/Package/Release/MoltenVK/include")
 endif()
