@@ -2,6 +2,7 @@
 #define TOOLSWIDGET_H
 
 #include <QWidget>
+#include <QToolButton>
 
 #include <Sahara/scene/scene.h>
 #include "tool/select.h"
@@ -23,6 +24,9 @@ class ToolsWidget : public QWidget
         ~ToolsWidget();
 
         void setScene(Sahara::Scene& scene);
+        void setTool(const Tool::Tools tool);
+
+        Select& select();
 
     public slots:
         void mouseMoved(const QVector2D& ndc);
@@ -30,6 +34,7 @@ class ToolsWidget : public QWidget
 
     signals:
         void updatedScene();
+        void toolSelected(const Tool::Tools tool);
 
     private:
         MainWindow* _window;

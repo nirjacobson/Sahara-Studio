@@ -2,6 +2,7 @@
 #define MODELWIDGET_H
 
 #include <QWidget>
+#include <QInputDialog>
 
 #include <Sahara/scene/model.h>
 #include "geometrymodel.h"
@@ -40,6 +41,7 @@ class ModelWidget : public QWidget
     private slots:
         void materialsComboBoxCurrentTextChanged(const QString& text);
         void animationsComboBoxCurrentTextChanged(const QString& text);
+        void addMaterial();
 
 };
 

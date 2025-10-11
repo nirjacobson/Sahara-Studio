@@ -16,8 +16,11 @@ ModelWidget::ModelWidget(MainWindow* window, QWidget *parent) :
     _animationsTabWidget = ui->tabWidget->currentWidget();
     ui->tabWidget->setCurrentIndex(0);
 
+    ui->addMaterialPushButton->setIcon(QIcon(":/icons/add.png"));
+
     connect(ui->materialsComboBox, &QComboBox::currentTextChanged, this, &ModelWidget::materialsComboBoxCurrentTextChanged);
     connect(ui->animationsComboBox, &QComboBox::currentTextChanged, this, &ModelWidget::animationsComboBoxCurrentTextChanged);
+    connect(ui->addMaterialPushButton, &QPushButton::clicked, this, &ModelWidget::addMaterial);
 }
 
 ModelWidget::~ModelWidget()
@@ -92,4 +95,21 @@ void ModelWidget::materialsComboBoxCurrentTextChanged(const QString& text)
 void ModelWidget::animationsComboBoxCurrentTextChanged(const QString& text)
 {
     _window->app()->undoStack().push(new SetModelAnimationCommand(_window, _model, text));
+}
+
+void ModelWidget::addMaterial()
+{
+    bool ok;
+    QString name = QInputDialog::getText(nullptr, "Enter material name", "Material name:", QLineEdit::Normal, QString(), &ok);
+
+    if (ok && !name.isEmpty()) {
+        if (dynamic_cast<Sahara::OpenGLModel*>(_model)) {
+            _model->addMaterial(name, new Sahara::OpenGLMaterial(name, name, QColor(), QColor(), QColor(), QColor(), 0));
+        } else if (dynamic_cast<Sahara::VulkanModel*>(_model)) {
+            _model->addMaterial(name, new Sahara::VulkanMaterial(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), name, name,  QColor(), QColor(), QColor(), QColor(), 0));
+        }
+        _materialIdsByName[name] = name;
+        ui->materialsComboBox->addItem(name);
+        ui->materialsComboBox->setCurrentText(name);
+    }
 }

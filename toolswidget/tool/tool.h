@@ -11,6 +11,11 @@ class Tool : public QObject
     Q_OBJECT
 
     public:
+        enum Tools {
+            Select,
+            Move
+        };
+
         Tool(Sahara::Scene& scene, QObject* parent=nullptr);
         virtual ~Tool();
 

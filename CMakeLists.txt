@@ -124,6 +124,12 @@ set(PROJECT_SOURCES
         commands/removescenegraphitemcommand.cpp
         commands/transformnodecommand.h
         commands/transformnodecommand.cpp
+        tooldetailwidget/selectwidget/selectwidget.h
+        tooldetailwidget/selectwidget/selectwidget.cpp
+        tooldetailwidget/selectwidget/selectwidget.ui
+        nodeitemdetailwidget/surfacewidget/surfacewidget.h
+        nodeitemdetailwidget/surfacewidget/surfacewidget.cpp
+        nodeitemdetailwidget/surfacewidget/surfacewidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

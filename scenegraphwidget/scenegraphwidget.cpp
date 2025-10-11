@@ -82,19 +82,12 @@ void SceneGraphWidget::treeViewSelectionChanged(const QItemSelection& selected, 
     if (selected.indexes().isEmpty()) {
         _selectedNode = nullptr;
 
-        if (!deselected.indexes().isEmpty()) {
-            QModelIndex index = deselected.indexes().first();
-            Sahara::Node* _deselectedNode = static_cast<Sahara::Node*>(index.internalPointer());
-            _deselectedNode->setFocus(false);
-        }
-
         emit selectionChanged(nullptr);
         return;
     }
 
     QModelIndex index = selected.indexes().first();
     _selectedNode = static_cast<Sahara::Node*>(index.internalPointer());
-    _selectedNode->setFocus(true);
 
     ui->eyeToolButton->setVisible(!_selectedNode->isRoot() && dynamic_cast<Sahara::Camera*>(&_selectedNode->item()));
     ui->flyThroughToolButton->setVisible(!_selectedNode->isRoot() && dynamic_cast<Sahara::Camera*>(&_selectedNode->item()));

@@ -14,6 +14,8 @@
 #include "nodeitemdetailwidget/pointlightwidget/pointlightwidget.h"
 #include "nodeitemdetailwidget/modelwidget/modelwidget.h"
 #include "nodeitemdetailwidget/scenewidget/scenewidget.h"
+#include "nodeitemdetailwidget/surfacewidget/surfacewidget.h"
+#include "tooldetailwidget/selectwidget/selectwidget.h"
 #include <Sahara/widgets/scenewidget/openglscenewidget.h>
 
 #ifdef VULKAN
@@ -55,6 +57,7 @@ class MainWindow : public QMainWindow
         bool _vulkan;
         Sahara::SceneWidget* _primarySceneWidget;
         ToolsWidget* _toolsWidget;
+        SelectWidget* _selectWidget;
         SceneGraphWidget* _sceneGraphWidget;
         NodeDetailWidget* _nodeDetailWidget;
         QScrollArea _nodeDetailWidgetScrollArea;
@@ -65,6 +68,7 @@ class MainWindow : public QMainWindow
         ModelWidget* _modelWidget;
         SceneWidget* _sceneWidget;
         QScrollArea _sceneWidgetScrollArea;
+        SurfaceWidget* _surfaceWidget;
         Sahara::Renderer* _renderer;
 
         Sahara::Node* _selectedNode;
@@ -86,6 +90,9 @@ class MainWindow : public QMainWindow
         void camerasActionTriggered();
         void openGLTriggered();
         void vulkanTriggered();
+        void toolSelectionChanged(const Tool::Tools tool);
+        void selectionToolModeChanged(const Select::Mode mode);
+        void selectedSurface(Sahara::Model *model, Sahara::Instance* inst, const int surfaceIdx);
 };
 
 #endif // MAINWINDOW_H

@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     _cameraWidget(nullptr),
     _pointLightWidget(nullptr),
     _modelWidget(nullptr),
+    _selectWidget(nullptr),
     _app(application)
 {
     ui->setupUi(this);
@@ -89,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent, Application* application) :
     _pointLightWidget = new PointLightWidget(this);
     _modelWidget = new ModelWidget(this);
     _sceneWidget = new SceneWidget(this);
+    _surfaceWidget = new SurfaceWidget();
 
     _nodeDetailWidgetScrollArea.setWidget(_nodeDetailWidget);
     _cameraWidgetScrollArea.setWidget(_cameraWidget);
@@ -182,9 +184,17 @@ void MainWindow::sceneWidgetInitialized()
 
     _toolsWidget = new ToolsWidget(this, _primarySceneWidget->scene());
     connect(_toolsWidget, &ToolsWidget::updatedScene, _sceneGraphWidget, &SceneGraphWidget::sceneUpdated);
+    connect(_toolsWidget, &ToolsWidget::toolSelected, this, &MainWindow::toolSelectionChanged);
     connect(dynamic_cast<QObject*>(_primarySceneWidget), SIGNAL(mouseMoved(const QVector2D&)), _toolsWidget, SLOT(mouseMoved(const QVector2D&)));
     connect(dynamic_cast<QObject*>(_primarySceneWidget), SIGNAL(mousePressed(const QVector2D&)), _toolsWidget, SLOT(mousePressed(const QVector2D&)));
     ui->toolsDockWidget->setWidget(_toolsWidget);
+
+    connect(&_toolsWidget->select(), &Select::selectedSurface, this, &MainWindow::selectedSurface);
+
+    _selectWidget = new SelectWidget(this);
+    connect(_selectWidget, &SelectWidget::selectionModeChanged, this, &MainWindow::selectionToolModeChanged);
+
+    _toolsWidget->setTool(Tool::Tools::Select);
 
     _renderer = _primarySceneWidget->renderer();
 }
@@ -229,9 +239,13 @@ void MainWindow::sceneGraphWidgetSelectionChanged(Sahara::Node* node)
         } else {
             ui->nodeItemDockWidget->setWidget(nullptr);
         }
+
+        _toolsWidget->select().select(node);
     } else {
         ui->nodeDockWidget->setWidget(nullptr);
         ui->nodeItemDockWidget->setWidget(nullptr);
+
+        _toolsWidget->select().select(nullptr);
     }
 }
 
@@ -358,5 +372,29 @@ void MainWindow::vulkanTriggered()
     settings.setValue("API", "Vulkan");
 
     QMessageBox::information(this, "Please restart the program", "Please restart the program for the changes to take effect.");
+}
+
+void MainWindow::toolSelectionChanged(const Tool::Tools tool)
+{
+    switch (tool) {
+    case Tool::Tools::Select:
+        ui->toolDetailsWidget->setWidget(_selectWidget);
+        break;
+    default:
+        ui->toolDetailsWidget->setWidget(nullptr);
+        break;
+    }
+}
+
+void MainWindow::selectionToolModeChanged(const Select::Mode mode)
+{
+    _toolsWidget->select().setMode(mode);
+}
+
+void MainWindow::selectedSurface(Sahara::Model* model, Sahara::Instance *inst, const int surfaceIdx)
+{
+    _surfaceWidget->setSurface(model, inst, surfaceIdx);
+    ui->nodeItemDockWidget->setWidget(_surfaceWidget);
+
 }
 

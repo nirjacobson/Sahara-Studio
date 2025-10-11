@@ -37,18 +37,31 @@
        <item row="0" column="0">
         <widget class="QComboBox" name="materialsComboBox"/>
        </item>
-       <item row="1" column="0">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="addMaterialPushButton">
+         <property name="maximumSize">
+          <size>
+           <width>24</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
         <widget class="MaterialWidget" name="materialWidget" native="true"/>
        </item>
-       <item row="2" column="0">
+       <item row="2" column="0" colspan="2">
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>269</width>
+           <height>96</height>
           </size>
          </property>
         </spacer>
@@ -66,7 +79,7 @@
        <item row="1" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>

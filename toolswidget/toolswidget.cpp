@@ -1,6 +1,6 @@
 #include "toolswidget.h"
-#include "ui_toolswidget.h"
 #include "mainwindow.h"
+#include "toolswidget/ui_toolswidget.h"
 
 ToolsWidget::ToolsWidget(MainWindow* window, Sahara::Scene& scene, QWidget *parent) :
     QWidget(parent),
@@ -17,9 +17,6 @@ ToolsWidget::ToolsWidget(MainWindow* window, Sahara::Scene& scene, QWidget *pare
     connect(&_move, &Tool::released, this, &ToolsWidget::toolReleased);
     connect(&_move, &Move::mouseMotion, this, &ToolsWidget::moveMotion);
 
-    _tool = &_select;
-
-    ui->selectToolButton->setChecked(true);
     ui->selectToolButton->setIcon(QIcon(":/icons/cursor.png"));
     ui->moveToolButton->setIcon(QIcon(":/icons/move.png"));
 
@@ -36,6 +33,25 @@ void ToolsWidget::setScene(Sahara::Scene& scene)
 {
     _select.setScene(scene);
     _move.setScene(scene);
+}
+
+void ToolsWidget::setTool(const Tool::Tools tool)
+{
+    switch (tool) {
+    case Tool::Select:
+        selectToolButtonClicked();
+        break;
+    case Tool::Move:
+        moveToolButtonClicked();
+        break;
+    default:
+        break;
+    }
+}
+
+Select &ToolsWidget::select()
+{
+    return _select;
 }
 
 void ToolsWidget::mouseMoved(const QVector2D& ndc)
@@ -58,12 +74,14 @@ void ToolsWidget::selectToolButtonClicked()
 {
     _tool = &_select;
     toolButtonClicked();
+    emit toolSelected(Tool::Tools::Select);
 }
 
 void ToolsWidget::moveToolButtonClicked()
 {
     _tool = &_move;
     toolButtonClicked();
+    emit toolSelected(Tool::Tools::Move);
 }
 
 void ToolsWidget::toolReleased()
