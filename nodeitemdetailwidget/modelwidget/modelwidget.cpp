@@ -105,8 +105,14 @@ void ModelWidget::addMaterial()
     if (ok && !name.isEmpty()) {
         if (dynamic_cast<Sahara::OpenGLModel*>(_model)) {
             _model->addMaterial(name, new Sahara::OpenGLMaterial(name, name, QColor(), QColor(), QColor(), QColor(), 0));
-        } else if (dynamic_cast<Sahara::VulkanModel*>(_model)) {
-            _model->addMaterial(name, new Sahara::VulkanMaterial(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), name, name,  QColor(), QColor(), QColor(), QColor(), 0));
+        } else {
+#ifdef VULKAN
+            if (dynamic_cast<Sahara::VulkanModel*>(_model)) {
+                _model->addMaterial(name, new Sahara::VulkanMaterial(dynamic_cast<Sahara::VulkanRenderer*>(_window->renderer()), name, name,  QColor(), QColor(), QColor(), QColor(), 0));
+            }
+#else
+            return;
+#endif
         }
         _materialIdsByName[name] = name;
         ui->materialsComboBox->addItem(name);
